@@ -14,4 +14,4 @@ This directory contains the API architecture for NST-Events, documenting how cli
 9. [Notification Architecture](notification-architecture.md)
 10. [Audit Logging Architecture](audit-logging-architecture.md)
 11. [Rate Limiting Strategy](rate-limiting-strategy.md)
-12. [API Freeze V1](api-freeze-v1.md)\n
+12. [API Freeze V1](api-freeze-v1.md)
