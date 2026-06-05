@@ -18,4 +18,4 @@ Logs are kept indefinitely in V1. A background cron job may archive logs older t
 * Action: `OVERRIDE_ATTENDANCE`
 * Previous: `{"status": "ABSENT"}`
 * New: `{"status": "PRESENT"}`
-* Actor: `faculty_id_123`\n
+* Actor: `faculty_id_123`

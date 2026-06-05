@@ -6,4 +6,4 @@
 * **Home Feed**: Recommended or promoted events.
 
 ## Filtering & Search
-Users can filter by `event_type` and date. Search utilizes the backend PostgreSQL Full Text Search vector.\n
+Users can filter by `event_type` and date. Search utilizes the backend PostgreSQL Full Text Search vector.

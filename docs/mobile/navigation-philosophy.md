@@ -8,4 +8,4 @@
 ## Visual Effects Strategy (V1)
 Our visual philosophy focuses on premium, native-feeling aesthetics without compromising performance.
 * **Included**: Standard mobile rendering techniques, native blur effects, and frosted glass surfaces.
-* **Excluded**: Custom GPU shaders, Liquid Glass rendering, and advanced graphics programming. These are reserved for future experimentation.\n
+* **Excluded**: Custom GPU shaders, Liquid Glass rendering, and advanced graphics programming. These are reserved for future experimentation.

@@ -14,4 +14,4 @@ The primary navigation relies on a customizable bottom tab bar.
 * **Modals**: Used for ephemeral, context-switching tasks (e.g., Event Registration, QR Check-in) requiring user focus before returning to the previous context.
 
 ## State Management
-Tabs maintain their own separate navigation stacks. However, custom tab removal triggers state destruction (see Tab Governance).\n
+Tabs maintain their own separate navigation stacks. However, custom tab removal triggers state destruction (see Tab Governance).

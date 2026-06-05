@@ -17,4 +17,4 @@
 * **Flow**: Students must scan a separate QR code for each session. The analytics dashboard aggregates this to show partial or full completion.
 
 ## Audit Logs
-Every `attendance_records` row includes `audit_metadata` (e.g., `device_os`, `gps_accuracy`) to resolve grading disputes.\n
+Every `attendance_records` row includes `audit_metadata` (e.g., `device_os`, `gps_accuracy`) to resolve grading disputes.

@@ -15,4 +15,4 @@ Waitlisted registrations require a dedicated, first-class confirmation state to 
 
 ## Actions
 * **Keep Waitlist Spot**: Acknowledge and return to feed.
-* **Cancel Registration**: Remove self from queue.\n
+* **Cancel Registration**: Remove self from queue.

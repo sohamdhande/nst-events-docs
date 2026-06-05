@@ -12,4 +12,4 @@ In an academic setting, records (like event registrations or clubs) are often re
 3. **Partial Unique Indexes**: Prevent duplicate key errors for re-created entities by indexing only where `deleted_at IS NULL`.
 
 ## Cascade Behavior
-Soft deletes must logically cascade. An application-layer trigger function handles soft-deleting `event_registrations` when an `event` is soft-deleted.\n
+Soft deletes must logically cascade. An application-layer trigger function handles soft-deleting `event_registrations` when an `event` is soft-deleted.

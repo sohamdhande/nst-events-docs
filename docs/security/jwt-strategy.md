@@ -13,4 +13,4 @@ We **DO NOT** embed complex roles (like `CLUB_ADMIN for Club X`, Global Roles, C
 * Refresh tokens are rotated automatically by the Supabase client SDKs.
 
 ## Stale Permission Risks & Mitigations
-By relying on live RLS subqueries rather than JWT claims, the risk of stale permissions is completely eliminated. Role revocation takes effect instantly.\n
+By relying on live RLS subqueries rather than JWT claims, the risk of stale permissions is completely eliminated. Role revocation takes effect instantly.

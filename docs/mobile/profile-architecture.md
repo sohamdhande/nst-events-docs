@@ -11,4 +11,4 @@ It must never contain shared community data.
 * **Personal Achievements**: Badges earned.
 * **Personal Statistics**: Total hours, workshops attended.
 * **Leaderboard (Personal)**: My Rank, My Points, My Progress, Personal Position.
-* **Settings**: App preferences and notification toggles.\n
+* **Settings**: App preferences and notification toggles.

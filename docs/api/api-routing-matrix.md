@@ -15,4 +15,4 @@
 | Promote Member | RPC | Inserts into `club_memberships` + audit | `CLUB_ADMIN` |
 | Assign Club Admin| RPC | High-privilege role escalation | `PLATFORM_ADMIN` |
 | Create Club | RPC | Complex setup (creates tables/folders/roles) | `PLATFORM_ADMIN` |
-| Archive Event | RPC | State machine transition | `CLUB_ADMIN` + Date Check |\n
+| Archive Event | RPC | State machine transition | `CLUB_ADMIN` + Date Check |

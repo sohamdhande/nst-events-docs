@@ -14,4 +14,4 @@ We operate on a **Zero Trust** internal model. An authenticated JWT simply prove
 Views used to filter records execute with the permissions of the calling user (`security_invoker = true`), meaning RLS cascades securely through views.
 
 ## RLS Lifecycle
-Policies are defined in standard SQL migrations and managed entirely via source control.\n
+Policies are defined in standard SQL migrations and managed entirely via source control.

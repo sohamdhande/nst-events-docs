@@ -20,4 +20,4 @@
 
 ## `leaderboard_recalculation`
 * **Purpose**: Re-aggregates club points across the entire season if anomalies are detected.
-* **Trigger**: Manual HTTP by Platform Admin.\n
+* **Trigger**: Manual HTTP by Platform Admin.

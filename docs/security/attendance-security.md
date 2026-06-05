@@ -11,4 +11,4 @@
 * **Attendance Abuse Prevention**: Rate limits (5 attempts/min) prevent brute-forcing TOTPs.
 
 ## Known Risks
-* Advanced Spoofing: Custom rooted Android ROMs bypassing mock location flags.\n
+* Advanced Spoofing: Custom rooted Android ROMs bypassing mock location flags.

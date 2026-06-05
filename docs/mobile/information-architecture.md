@@ -20,4 +20,4 @@ Strictly for **Personal Record**.
 * Certificates
 * Personal Achievements
 * Personal Statistics (My Rank, My Points, My Progress, Personal Position)
-* Settings\n
+* Settings

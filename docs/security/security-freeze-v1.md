@@ -18,4 +18,4 @@
 
 ## Future Improvements
 * Implementation of anomaly detection (e.g., detecting if a user marks attendance at two distant locations within 1 minute).
-* Integrating advanced third-party anti-spoofing SDKs.\n
+* Integrating advanced third-party anti-spoofing SDKs.

@@ -30,4 +30,4 @@ CREATE TABLE audit_logs (
 Logs are kept indefinitely in V1.
 
 ## Investigation Workflow
-Platform Admins use a dedicated dashboard to search the audit logs by `entity_id` to replay exactly who modified a record and when.\n
+Platform Admins use a dedicated dashboard to search the audit logs by `entity_id` to replay exactly who modified a record and when.

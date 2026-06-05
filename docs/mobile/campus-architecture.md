@@ -8,4 +8,4 @@ The Campus tab is strictly governed. It is NOT a miscellaneous dumping ground. I
 * **Campus Discoverability**: Event feeds and announcements.
 * **Campus Achievements**: Global milestones.
 * **Community Information**: Broad campus alerts.
-* **Leaderboard (Campus)**: Top Clubs, Campus Rankings, Community Leaderboards.\n
+* **Leaderboard (Campus)**: Top Clubs, Campus Rankings, Community Leaderboards.

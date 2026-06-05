@@ -18,4 +18,4 @@ Operations that require atomic state changes, capacity validation, deep role res
 * **`INSERT INTO event_registrations`**: Bypasses capacity limits. MUST use RPC.
 * **`INSERT INTO attendance_records`**: Bypasses QR and Geofence checks. MUST use RPC/Edge.
 * **`UPDATE events SET status = 'PUBLISHED'`**: Bypasses the approval workflow logic. MUST use RPC.
-* **`DELETE FROM club_memberships`**: Can orphan teams or events. MUST use RPC.\n
+* **`DELETE FROM club_memberships`**: Can orphan teams or events. MUST use RPC.

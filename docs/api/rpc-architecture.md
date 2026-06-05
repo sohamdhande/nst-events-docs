@@ -17,4 +17,4 @@ This strategy ensures that concurrent requests from 500 students at exactly the 
 RPCs execute with `SECURITY INVOKER` privileges by default to respect RLS. However, some RPCs (like assigning attendance) require `SECURITY DEFINER` to bypass read-only restrictions. In `SECURITY DEFINER` functions, permissions MUST be explicitly resolved and checked live inside the function block before execution.
 
 ## PostGIS Usage
-Attendance RPCs use PostGIS to calculate distances dynamically against the event's `location_geofence` before committing the record.\n
+Attendance RPCs use PostGIS to calculate distances dynamically against the event's `location_geofence` before committing the record.

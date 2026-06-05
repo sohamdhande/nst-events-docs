@@ -10,4 +10,4 @@ Based on simulated stress tests and architectural analysis for the target popula
 * **Role Revocation**: RLS policies evaluate dynamically, meaning revoking a Club Admin instantly removes their edit privileges globally without needing to invalidate cache layers.
 
 ## Outcomes
-The PostgreSQL + Supabase architecture safely sustains the projected 3000+ student load with headroom.\n
+The PostgreSQL + Supabase architecture safely sustains the projected 3000+ student load with headroom.

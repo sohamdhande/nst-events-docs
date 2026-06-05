@@ -31,4 +31,4 @@ Used for complex database transactions, atomic operations (`SELECT FOR UPDATE`),
 Used for external integrations, compute-heavy tasks, QR token cryptographic generation, and processing background queues.
 
 ### 4. Storage Access
-Direct client uploads to Supabase Storage, secured by Storage RLS policies.\n
+Direct client uploads to Supabase Storage, secured by Storage RLS policies.

@@ -23,4 +23,4 @@ We rely heavily on contextual Database Roles verified via queries inside the RLS
 * **Who can read**: Self (Student), Organizers (Event owners).
 * **Who can write**: Self (If passing geofence and dynamic QR validation).
 * **Who can update**: `PLATFORM_ADMIN` only. (Faculty cannot override via UI).
-* **Who can delete**: `PLATFORM_ADMIN` only.\n
+* **Who can delete**: `PLATFORM_ADMIN` only.

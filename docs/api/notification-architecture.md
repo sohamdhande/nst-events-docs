@@ -16,4 +16,4 @@ Exponential backoff (1m, 5m, 15m) for network failures to Expo.
 If a message fails 3 times, it is moved to the DLQ.
 
 ## Rate Limiting & Delivery Tracking
-To prevent spam, clubs are limited to 2 broadcast notifications per week. Delivery tracking is handled by correlating Expo receipts back to the notification records.\n
+To prevent spam, clubs are limited to 2 broadcast notifications per week. Delivery tracking is handled by correlating Expo receipts back to the notification records.

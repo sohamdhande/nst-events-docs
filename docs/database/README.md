@@ -22,4 +22,4 @@ This directory contains the complete PostgreSQL schema architecture for the NST-
 17. [PostGIS Architecture](postgis-architecture.md)
 18. [Queue Architecture](queue-architecture.md)
 19. [Scalability Review](scalability-review.md)
-20. [Database Freeze V1](database-freeze-v1.md)\n
+20. [Database Freeze V1](database-freeze-v1.md)

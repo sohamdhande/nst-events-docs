@@ -12,4 +12,4 @@ Rate limiting is enforced at the Supabase API Gateway and within specific Edge F
 * **Notifications**: Clubs restricted to 2 broadcasts per week.
 
 ## Documented Reasoning
-The limits protect the database from connection exhaustion and prevent malicious actors from scripting mass-registrations to block legitimate students from attending limited-capacity events.\n
+The limits protect the database from connection exhaustion and prevent malicious actors from scripting mass-registrations to block legitimate students from attending limited-capacity events.

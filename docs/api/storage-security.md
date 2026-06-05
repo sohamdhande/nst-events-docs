@@ -22,4 +22,4 @@ All media rows must reference the `user_id` that uploaded them to prevent orphan
 
 ## Threats & Mitigations
 * **Threat**: Malicious file upload (e.g., malware).
-* **Mitigation**: Strict MIME type validation in Storage RLS policies.\n
+* **Mitigation**: Strict MIME type validation in Storage RLS policies.

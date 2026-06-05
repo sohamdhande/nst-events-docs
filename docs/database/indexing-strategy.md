@@ -23,4 +23,4 @@
 ## Composite Indexes
 * **Why**: Multi-column lookups that happen frequently together.
 * **Where**: `(session_id, user_id)` on `attendance_records`.
-* **Accelerates**: Quickly verifying if a user has already checked in.\n
+* **Accelerates**: Quickly verifying if a user has already checked in.

@@ -21,4 +21,4 @@ FROZEN
 
 ## Out of Scope Features
 * Liquid Glass Rendering
-* Custom GPU Shaders\n
+* Custom GPU Shaders

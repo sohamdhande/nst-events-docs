@@ -15,4 +15,4 @@ JSONB is powerful but can become a dumping ground. We strictly regulate what can
 * **Attendance**: Must be tracked in their respective strongly-typed tables.
 * **Registrations**: Same as attendance.
 * **Analytics**: Computed views only, never stored in JSONB.
-* **Relationships**: No foreign keys disguised as JSON objects.\n
+* **Relationships**: No foreign keys disguised as JSON objects.

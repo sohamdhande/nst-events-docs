@@ -16,4 +16,4 @@
 * Dedicated caching layer (Redis) for public event feeds.
 
 ## Not In Scope
-* Cryptographic signing of API requests from the mobile client.\n
+* Cryptographic signing of API requests from the mobile client.

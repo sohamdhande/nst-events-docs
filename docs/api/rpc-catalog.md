@@ -31,4 +31,4 @@
 
 ## `process_waitlist(p_event_id)`
 * **Purpose**: Moves waitlisted users to registered if capacity frees up.
-* **Permissions**: `SECURITY DEFINER` (Called internally via triggers).\n
+* **Permissions**: `SECURITY DEFINER` (Called internally via triggers).

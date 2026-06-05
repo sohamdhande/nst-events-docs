@@ -9,4 +9,4 @@ If a user tries to `UPDATE events SET title = 'X' WHERE id = 'Y'`:
 3. If True, the update proceeds.
 
 ## Overlapping Roles
-How overlapping roles work: A user can be a `MEMBER` of Club A and a `CLUB_ADMIN` of Club B. Their permissions are strictly scoped to the `club_id` in question. Effective permissions are calculated on a per-row basis.\n
+How overlapping roles work: A user can be a `MEMBER` of Club A and a `CLUB_ADMIN` of Club B. Their permissions are strictly scoped to the `club_id` in question. Effective permissions are calculated on a per-row basis.

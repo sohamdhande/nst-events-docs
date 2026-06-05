@@ -14,4 +14,4 @@ NST-Events operates on a strict **Pessimistic Registration Flow**. Because event
 ## Outcomes
 * **REGISTERED**: Success UI.
 * **WAITLISTED**: Routes to the Waitlist Flow.
-* **FAILED**: Error toast (e.g., network failure, banned user).\n
+* **FAILED**: Error toast (e.g., network failure, banned user).

@@ -17,4 +17,4 @@ Negative: Any further schema deviations require a formal amendment and un-freezi
 * **Extending design phase**: Rejected. Current design has passed the scalability review and supports our 3000+ student target.
 
 ## Future Impact
-Serves as the unbreakable contract between the backend tables and the frontend data layers for the entirety of the V1 build.\n
+Serves as the unbreakable contract between the backend tables and the frontend data layers for the entirety of the V1 build.

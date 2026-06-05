@@ -13,4 +13,4 @@ This directory contains the Row Level Security (RLS) architecture, permission ma
 8. [Attendance Security](attendance-security.md)
 9. [Threat Model](threat-model.md)
 10. [Stress Test Results](stress-test-results.md)
-11. [Security Freeze V1](security-freeze-v1.md)\n
+11. [Security Freeze V1](security-freeze-v1.md)

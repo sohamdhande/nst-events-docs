@@ -17,4 +17,4 @@ The Home tab evaluates context based on a strict 5-tier priority hierarchy. High
 ## Conflict Resolution
 If multiple states trigger simultaneously, the highest priority wins.
 * **Example**: An Attendance Window is open (Priority 1), AND the user receives a Waitlist Promotion for tomorrow's event (Priority 3).
-* **Result**: Priority 1 wins. The Waitlist Promotion is demoted to a standard notification or secondary card below the fold.\n
+* **Result**: Priority 1 wins. The Waitlist Promotion is demoted to a standard notification or secondary card below the fold.

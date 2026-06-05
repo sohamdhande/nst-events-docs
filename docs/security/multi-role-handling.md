@@ -10,4 +10,4 @@
 Permissions are additive. If a user holds multiple roles for a club, the highest privilege applies.
 
 ## Conflict Handling
-In cases of conflict (e.g., a user is both trying to attend an event and approve it), the system enforces separation of duties where possible. For instance, Faculty cannot mark attendance, so the student role applies for check-in, but the faculty role applies for approval.\n
+In cases of conflict (e.g., a user is both trying to attend an event and approve it), the system enforces separation of duties where possible. For instance, Faculty cannot mark attendance, so the student role applies for check-in, but the faculty role applies for approval.

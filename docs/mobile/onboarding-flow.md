@@ -12,4 +12,4 @@ The UI displays a step-by-step checklist to guide the user:
 5. Attend First Event
 
 ## Progression Behavior
-As the user completes actions across the app, the Home feed delta sync recognizes the state changes. The checklist dynamically crosses off items and eventually disappears once the user achieves a critical mass of activity, replaced entirely by the standard Campus Dashboard layout.\n
+As the user completes actions across the app, the Home feed delta sync recognizes the state changes. The checklist dynamically crosses off items and eventually disappears once the user achieves a critical mass of activity, replaced entirely by the standard Campus Dashboard layout.

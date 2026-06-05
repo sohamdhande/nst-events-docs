@@ -25,4 +25,4 @@ The RPC supports a `last_fetched_at` parameter.
 Home is entirely context-aware.
 * **Attendance Active**: Attendance Widget dominates layout.
 * **Event Starting Soon**: Countdown Widget dominates layout.
-* **No Urgent Context**: Standard Campus Dashboard layout.\n
+* **No Urgent Context**: Standard Campus Dashboard layout.

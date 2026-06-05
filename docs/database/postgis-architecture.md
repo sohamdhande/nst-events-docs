@@ -12,4 +12,4 @@ A GiST index on `location_geofence` ensures immediate lookups for spatial querie
 
 ## ST_DWithin
 Validation query checks:
-`ST_DWithin(event.location_geofence, ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326), 50)`\n
+`ST_DWithin(event.location_geofence, ST_SetSRID(ST_MakePoint(user_lng, user_lat), 4326), 50)`

@@ -14,4 +14,4 @@ If an event is a Hackathon, users create a `teams` record first, then they are i
 When an event hits max capacity, `registration_status` defaults to `WAITLISTED`. 
 
 ### `SELECT FOR UPDATE` Strategy
-To prevent overselling limited capacity events (e.g., only 50 seats), the registration RPC function utilizes `SELECT ... FOR UPDATE` row-level locks on the `events` table to safely increment the internal `registration_count` concurrently.\n
+To prevent overselling limited capacity events (e.g., only 50 seats), the registration RPC function utilizes `SELECT ... FOR UPDATE` row-level locks on the `events` table to safely increment the internal `registration_count` concurrently.

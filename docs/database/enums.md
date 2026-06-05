@@ -36,4 +36,4 @@ Categorizes the generic event model.
 * `FACULTY_MENTOR`
 * `CLUB_ADMIN`
 * `CORE_MEMBER`
-* `MEMBER`\n
+* `MEMBER`

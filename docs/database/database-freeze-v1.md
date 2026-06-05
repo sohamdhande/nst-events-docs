@@ -22,4 +22,4 @@ FROZEN
 * Materialized views postponed (Real-time queries are sufficient for now).
 * Advanced analytics postponed (Using basic aggregate queries).
 * No cryptographic device signing (Relying on basic heuristics + Geofencing + Dynamic QR).
-* Database partitioning for `attendance_records` postponed until year 2.\n
+* Database partitioning for `attendance_records` postponed until year 2.

@@ -14,4 +14,4 @@ Simulated security audits and architecture validations.
 * **Notification Abuse**: Broadcast limits correctly blocked spamming above 2/week. **PASS**.
 * **Compromised Club Admin**: Audit logs fully tracked all destructive actions performed by the compromised account. **PASS**.
 
-Overall architecture is sound and secure under stress.\n
+Overall architecture is sound and secure under stress.

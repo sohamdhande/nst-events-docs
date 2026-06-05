@@ -15,4 +15,4 @@ search_vector tsvector GENERATED ALWAYS AS (
 ## What Can Be Searched
 * **Events**: Title, description, location_name.
 * **Clubs**: Name, description.
-* **Users**: `full_name`, `email` (Admin dashboards only).\n
+* **Users**: `full_name`, `email` (Admin dashboards only).

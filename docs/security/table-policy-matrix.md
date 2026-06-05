@@ -20,4 +20,4 @@ Comprehensive breakdown of RLS policies per table.
 | `notifications` | Self | System Queue | Self (mark read) | Self | |
 | `leaderboard_points`| All Auth Users | Edge Functions | None | None | Append only |
 | `audit_logs` | Platform Admin | Triggers | None | None | Append only |
-| `storage.objects`| Public for Media | Owner / Admin | Owner / Admin | Owner / Admin | Secure docs locked down |\n
+| `storage.objects`| Public for Media | Owner / Admin | Owner / Admin | Owner / Admin | Secure docs locked down |

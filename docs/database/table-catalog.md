@@ -47,4 +47,4 @@
 * **Primary Key**: `id UUID`
 * **Foreign Keys**: `event_id`, `user_id`, `team_id`
 * **Indexes**: Composite `(event_id, user_id)` (UNIQUE)
-* **RLS Notes**: Insertable by self. Readable by event organizers.\n
+* **RLS Notes**: Insertable by self. Readable by event organizers.

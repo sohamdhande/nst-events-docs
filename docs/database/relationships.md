@@ -14,4 +14,4 @@
 
 ## Event → Attendance Session
 * **Cardinality**: 1:N
-* **Explanation**: An event can span 3 days. Instead of logging attendance against the event, users log attendance against Day 1, Day 2, etc. If it's a simple 1-hour event, exactly one session is automatically generated.\n
+* **Explanation**: An event can span 3 days. Instead of logging attendance against the event, users log attendance against Day 1, Day 2, etc. If it's a simple 1-hour event, exactly one session is automatically generated.

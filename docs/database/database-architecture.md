@@ -36,4 +36,4 @@ To define the complete PostgreSQL database architecture for NST-Events, serving 
 * **Soft Delete Rules**: Critical operational tables use a `deleted_at` column instead of hard deletes.
 
 ## Future Expansion Strategy
-* Schema is designed to handle multiple campuses by eventually introducing a `tenant_id` column, though V1 assumes a single campus.\n
+* Schema is designed to handle multiple campuses by eventually introducing a `tenant_id` column, though V1 assumes a single campus.

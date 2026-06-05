@@ -13,4 +13,4 @@ Deno-based Supabase Edge Functions exist to handle tasks that cannot or should n
 * **Complex Data Aggregation**: Let PostgreSQL handle JOINS and groupings.
 
 ## Queue Integration
-Edge functions act as the consumer for our `pgmq` messaging queue. They pull batches of notifications, process them, and update the database via the Supabase Service Role key.\n
+Edge functions act as the consumer for our `pgmq` messaging queue. They pull batches of notifications, process them, and update the database via the Supabase Service Role key.

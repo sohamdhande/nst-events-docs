@@ -7,4 +7,4 @@ The UI hides buttons and routes based on the user's role (Optimistic UX). Howeve
 Edge Functions verify the JWT and validate permissions by querying the database before taking action.
 
 ## Database Permissions (Source of Truth)
-Why the database is the source of truth: If a user bypasses the UI and sends a raw HTTP request to PostgREST to delete an event, the RLS policy will natively intercept and reject the request. This eliminates complex middleware bugs.\n
+Why the database is the source of truth: If a user bypasses the UI and sends a raw HTTP request to PostgREST to delete an event, the RLS policy will natively intercept and reject the request. This eliminates complex middleware bugs.

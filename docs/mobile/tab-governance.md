@@ -9,4 +9,4 @@ If a user removes a tab from their active toolbar:
 * If the tab is later re-added, a **fresh state is created**.
 
 ## Rationale
-No state preservation exists for removed tabs. This strict rule prevents massive background memory leaks and ensures predictable delta-sync behavior when the app is foregrounded.\n
+No state preservation exists for removed tabs. This strict rule prevents massive background memory leaks and ensures predictable delta-sync behavior when the app is foregrounded.

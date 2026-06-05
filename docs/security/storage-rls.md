@@ -14,4 +14,4 @@ Supabase Storage utilizes Postgres RLS natively on the `storage.objects` table.
 Folders inside buckets mirror database UUIDs to strictly enforce ownership logic.
 
 ## Signed URL Strategy
-For `secure_docs`, the client must request a signed URL. The generation of this URL is gated by an RPC that verifies the user's `FACULTY` or `PLATFORM_ADMIN` status.\n
+For `secure_docs`, the client must request a signed URL. The generation of this URL is gated by an RPC that verifies the user's `FACULTY` or `PLATFORM_ADMIN` status.
