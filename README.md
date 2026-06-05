@@ -10,7 +10,13 @@ It contains all architectural decisions, project planning, meeting notes, resear
 ## Documentation Structure
 The repository is organized as follows to ensure scalability and maintainability:
 
-* **`/docs`**: Core system documentation (Architecture, Database, Security, Features).
+* **`/docs`**: Core system documentation. This is heavily populated with V1 Frozen Architecture:
+  * `/docs/architecture/`: High-level stack and system definitions.
+  * `/docs/database/`: Complete schema, indexes, queries, relationships.
+  * `/docs/api/`: Routing, RPC catalogs, Edge Functions, queues.
+  * `/docs/security/`: RLS architecture, JWT strategy, threat models.
+  * `/docs/mobile/`: Mobile UX navigation, priorities, state management.
+  * `/docs/features/`: Core business logic (events, roles, attendance).
 * **`/adrs`**: Architecture Decision Records (ADRs). Immutable records of technical choices.
 * **`/research`**: Technical spikes, feasibility studies, and technology evaluations.
 * **`/planning`**: Sprint plans, roadmaps, and delivery tracking.
@@ -19,9 +25,9 @@ The repository is organized as follows to ensure scalability and maintainability
 
 ## How To Use This Repository
 1. **Start Here**: Read the `MASTER_CONTEXT.md` for the current state of the project.
-2. **Making a Decision**: Any significant technical decision must be recorded as an ADR in `/adrs` using the `ADR-000-template.md`.
-3. **Planning Work**: Use `/planning` to document sprint goals and deliverables.
-4. **Documenting Features**: Use the templates in `/docs/features` for comprehensive capability documentation.
+2. **Reviewing V1**: To understand how the app works, read the `docs/api/`, `docs/database/`, `docs/security/`, and `docs/mobile/` sections. All of these have been frozen for V1 development and contain implementation-grade specifics.
+3. **Making a Decision**: Any significant technical decision must be recorded as an ADR in `/adrs` using the `ADR-000-template.md`.
+4. **Planning Work**: Use `/planning` to document sprint goals and deliverables.
 
 ## Decision Making Process
 1. **Research phase**: Document findings in `/research`.
@@ -33,4 +39,4 @@ The repository is organized as follows to ensure scalability and maintainability
 ## Architecture Workflow
 - Changes to the architecture must first be discussed in a technical meeting (recorded in `/meetings`).
 - A subsequent ADR is required.
-- Following ADR acceptance, `/docs/architecture` and `/docs/database` must be updated to maintain consistency.
+- Following ADR acceptance, the respective `/docs/` folders must be updated to maintain consistency.
