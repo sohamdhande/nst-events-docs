@@ -19,3 +19,7 @@
 ## Future Improvements
 * Implementation of anomaly detection (e.g., detecting if a user marks attendance at two distant locations within 1 minute).
 * Integrating advanced third-party anti-spoofing SDKs.
+
+## Resolved Issues (Phase 1-4)
+* Added `SECURITY DEFINER` documentation for `resolve_attendance_dispute` and `force_transfer_leadership`.
+* Defined `notification_preferences` RLS policy: students can only read and update their own preferences.

@@ -14,3 +14,6 @@
 ## Future Enhancements & Out Of Scope
 * Real-time collaborative event drafting (Google Docs style) is out of scope.
 * Automated Certificate issuance is out of scope for V1.
+
+## Resolved Issues (Phase 1-4)
+* Operations Mode lockdown is now backed by `events.is_locked` + `lock_event()` / `unlock_event()`.

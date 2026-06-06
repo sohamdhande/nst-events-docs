@@ -4,7 +4,7 @@
 To maintain simplicity and query performance across the global feed, all events utilize a **Generic Event Model**.
 Instead of separate tables for Hackathons, Workshops, etc., we use a single `events` table.
 
-* **Standard Columns**: `id`, `title`, `description`, `start_time`, `end_time`, `location_geofence`, `club_id`.
+* **Standard Columns**: `id`, `title`, `description`, `start_time`, `end_time`, `location_geofence`. (Note: Events connect to clubs via the `event_clubs` join table for M:N relationships. At least one club must be attached to every event.)
 * **Dynamic Typing**: `event_type` (Enum: WORKSHOP, HACKATHON, GUEST_LECTURE, etc.)
 * **Flexible Metadata**: `metadata` (JSONB)
   * *Example for Hackathon*: `{"team_size_min": 2, "team_size_max": 4}`

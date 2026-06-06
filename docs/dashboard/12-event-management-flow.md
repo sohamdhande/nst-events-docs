@@ -11,3 +11,9 @@ Events can be mapped to multiple clubs during the Draft phase. Approvals require
 
 ## Faculty Event Creation
 Faculty Mentors and Faculty Admins possess the `Events → Create Event` capability directly. They are not merely review-only actors.
+
+## Multi-Club Association Management
+NST-Connect models `Event ↔ Multiple Clubs`. 
+* **Club Association Selector**: Dashboard UI component used during drafting.
+* **Ownership Rules**: The creator designates one `Primary Club` (which dictates the Faculty Mentor approval routing) and multiple `Secondary Clubs`.
+* **Associated Club List**: Rendered prominently on the Event Details screen.

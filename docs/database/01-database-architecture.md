@@ -26,7 +26,7 @@ To define the complete PostgreSQL database architecture for NST-Events, serving 
 * **Registrations\nEvent Results (Competition Outcomes)**: `event_registrations`, `teams`, `team_members`
 * **Attendance**: `attendance_sessions`, `attendance_records`
 * **Notifications**: `notifications`, `notification_preferences`
-* **Analytics & Gamification**: `leaderboard_scores`
+* **Analytics & Gamification**: `club_leaderboard_mv` and `student_leaderboard_mv` as materialized views
 * **Audit Logs**: `audit_logs`
 
 ## Database Conventions

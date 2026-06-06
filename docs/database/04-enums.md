@@ -17,7 +17,6 @@ Manages attendee state and capacity limits.
 The formal record of a user's presence.
 * `PRESENT`
 * `ABSENT`
-* `LATE`
 
 ## `event_type`
 Categorizes the generic event model.
@@ -53,3 +52,20 @@ Used in `event_results`.
 * `SECOND_RUNNER_UP`: 3rd Place.
 * `TOP_10`: Ranked inside top ten but not podium.
 * `PARTICIPANT`: Participated successfully but did not place.
+
+## `dispute_status`
+Tracks the state of an attendance dispute.
+* `PENDING`
+* `APPROVED`
+* `REJECTED`
+
+## `handover_status`
+Manages the club leadership transfer lifecycle.
+* `PENDING`
+* `APPROVED`
+* `REJECTED`
+
+## `attendance_type_enum`
+Defines whether an event requires one check-in or multiple.
+* `SINGLE`
+* `MULTI_SESSION`

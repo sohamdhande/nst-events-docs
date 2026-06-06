@@ -17,3 +17,13 @@
 
 ## Not In Scope
 * Cryptographic signing of API requests from the mobile client.
+
+## Resolved Issues (Phase 1-4)
+* All 11 missing RPCs (disputes, handovers, lock/unlock, etc.) have been added to the catalog.
+* Event archiving access has been expanded to include Faculty roles.
+
+## Open Issues
+* Notifications feature.
+* Search feature.
+* Leave team.
+* Create club.
