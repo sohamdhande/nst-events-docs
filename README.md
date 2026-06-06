@@ -15,7 +15,7 @@ The repository is organized as follows to ensure scalability and maintainability
   * `/docs/database/`: Complete schema, indexes, queries, relationships.
   * `/docs/api/`: Routing, RPC catalogs, Edge Functions, queues.
   * `/docs/security/`: RLS architecture, JWT strategy, threat models.
-  * `/docs/mobile/`: Mobile UX navigation, priorities, state management.
+  * `/docs/mobile/`: Mobile UX navigation, priorities, state management.\n  * `/docs/dashboard/`: Web Dashboard soft navigation, Operations mode, routing rules.\n  * `/docs/design-system/`: Design tokens, component specs, accessibility, and multi-campus theming.
   * `/docs/features/`: Core business logic (events, roles, attendance).
 * **`/adrs`**: Architecture Decision Records (ADRs). Immutable records of technical choices.
 * **`/research`**: Technical spikes, feasibility studies, and technology evaluations.

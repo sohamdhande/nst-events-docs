@@ -21,3 +21,11 @@ Comprehensive breakdown of RLS policies per table.
 | `leaderboard_points`| All Auth Users | Edge Functions | None | None | Append only |
 | `audit_logs` | Platform Admin | Triggers | None | None | Append only |
 | `storage.objects`| Public for Media | Owner / Admin | Owner / Admin | Owner / Admin | Secure docs locked down |
+
+## `event_results`
+* **SELECT**: Public (all authenticated users can view winners).
+* **INSERT/UPDATE**: `Club Admin`, `Faculty Mentor`, `Faculty Admin`, `Platform Admin`. (Students explicitly blocked).
+* **DELETE**: `Platform Admin` only.
+
+## `event_registrations` (Update for `participation_role`)
+* **UPDATE (`participation_role`)**: Restricted to `Club Admin`, `Faculty Mentor`, `Faculty Admin`, `Platform Admin`. Students cannot modify their own roles.

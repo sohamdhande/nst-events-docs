@@ -23,7 +23,7 @@ To define the complete PostgreSQL database architecture for NST-Events, serving 
 * **Users & Roles**: `users`, `club_memberships`
 * **Clubs**: `clubs`
 * **Events**: `events`, `event_clubs`, `event_approvals`
-* **Registrations**: `event_registrations`, `teams`, `team_members`
+* **Registrations\nEvent Results (Competition Outcomes)**: `event_registrations`, `teams`, `team_members`
 * **Attendance**: `attendance_sessions`, `attendance_records`
 * **Notifications**: `notifications`, `notification_preferences`
 * **Analytics & Gamification**: `leaderboard_scores`

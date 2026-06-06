@@ -32,3 +32,15 @@
 ## `process_waitlist(p_event_id)`
 * **Purpose**: Moves waitlisted users to registered if capacity frees up.
 * **Permissions**: `SECURITY DEFINER` (Called internally via triggers).
+
+### `assign_participation_role`
+* **Purpose**: Upgrades a user's role from ATTENDEE to VOLUNTEER, ORGANIZER, etc.
+* **Security**: Only callable by Club Admin, Faculty Mentor, Faculty Admin, Platform Admin.
+
+### `submit_competition_result`
+* **Purpose**: Records a verified placement (e.g., WINNER) in the `event_results` table.
+* **Security**: Only callable by Club Admin, Faculty Mentor, Faculty Admin, Platform Admin. Students may NEVER submit results.
+
+### `adjust_points_disciplinary`
+* **Purpose**: Corrective manual point adjustment.
+* **Security**: Only callable by Platform Admin. Automatically creates an `ADJUST_POINTS` audit log.

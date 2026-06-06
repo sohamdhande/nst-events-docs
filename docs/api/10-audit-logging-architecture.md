@@ -31,3 +31,10 @@ Logs are kept indefinitely in V1.
 
 ## Investigation Workflow
 Platform Admins use a dedicated dashboard to search the audit logs by `entity_id` to replay exactly who modified a record and when.
+
+### Leaderboard & Merit Audit Actions
+* `ASSIGN_PARTICIPATION_ROLE`: Changing a user's role.
+* `REMOVE_PARTICIPATION_ROLE`: Downgrading a role.
+* `SUBMIT_COMPETITION_RESULT`: Posting a competition win.
+* `MODIFY_COMPETITION_RESULT`: Correcting a result.
+* `ADJUST_POINTS`: Platform Admin override.

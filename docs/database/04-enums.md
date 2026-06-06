@@ -37,3 +37,19 @@ Categorizes the generic event model.
 * `CLUB_ADMIN`
 * `CORE_MEMBER`
 * `MEMBER`
+
+### `participation_role`
+Used in `event_registrations`.
+* `ATTENDEE`: User attended event successfully (Default upon check-in).
+* `VOLUNTEER`: User actively helped operate event.
+* `ORGANIZER`: User was part of official event organizing team.
+* `SPEAKER`: User delivered session, workshop, or talk.
+* `MENTOR`: User acted as mentor, reviewer, judge, or advisor.
+
+### `competition_result`
+Used in `event_results`.
+* `WINNER`: 1st Place.
+* `RUNNER_UP`: 2nd Place.
+* `SECOND_RUNNER_UP`: 3rd Place.
+* `TOP_10`: Ranked inside top ten but not podium.
+* `PARTICIPANT`: Participated successfully but did not place.

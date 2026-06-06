@@ -19,3 +19,10 @@ Logs are kept indefinitely in V1. A background cron job may archive logs older t
 * Previous: `{"status": "ABSENT"}`
 * New: `{"status": "PRESENT"}`
 * Actor: `faculty_id_123`
+
+### Leaderboard & Merit Audit Actions
+* `ASSIGN_PARTICIPATION_ROLE`: Changing a user's role.
+* `REMOVE_PARTICIPATION_ROLE`: Downgrading a role.
+* `SUBMIT_COMPETITION_RESULT`: Posting a competition win.
+* `MODIFY_COMPETITION_RESULT`: Correcting a result.
+* `ADJUST_POINTS`: Platform Admin override.

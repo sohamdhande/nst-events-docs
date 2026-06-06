@@ -48,3 +48,15 @@
 * **Foreign Keys**: `event_id`, `user_id`, `team_id`
 * **Indexes**: Composite `(event_id, user_id)` (UNIQUE)
 * **RLS Notes**: Insertable by self. Readable by event organizers.
+
+## `event_results`
+Stores competition outcomes securely.
+* `id` (uuid, pk)
+* `event_id` (uuid, fk -> events.id)
+* `user_id` (uuid, fk -> users.id)
+* `result_type` (competition_result enum)
+* `created_by` (uuid, fk -> users.id)
+* `created_at` (timestamptz)
+
+**Note on `event_registrations`:**
+The `event_registrations` table has been upgraded to include a `participation_role` (enum) field.
