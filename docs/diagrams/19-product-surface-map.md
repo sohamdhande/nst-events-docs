@@ -14,7 +14,7 @@ graph TD
         Analytics[System Analytics Module]
     end
 
-    subgraph Mobile Interface (Screens)
+    subgraph Mobile Interface Screens
         MobileAuth[Login & Onboarding]
         MobileHome[Home Feed]
         MobileEvent[Event Discovery & Registration]
@@ -22,7 +22,7 @@ graph TD
         MobileProfile[Profile & Leaderboard]
     end
 
-    subgraph Web Dashboard (Screens)
+    subgraph Web Dashboard Screens
         WebAuth[Admin Login]
         WebHome[Dashboard Overview]
         WebEvents[Event Creation & Operations Mode]

@@ -11,5 +11,5 @@ graph TD
     LiveEvent --> Controls[Attendance Controls]
     LiveEvent --> Lock[Lock Event Registration]
     LiveEvent --> Manual[Manual Verification / Check-in]
-    LiveEvent --> Emergency[Emergency Actions (e.g., Evacuation)]
+    LiveEvent --> Emergency["Emergency Actions (e.g., Evacuation)"]
 ```

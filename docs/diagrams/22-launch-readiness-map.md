@@ -12,27 +12,27 @@ graph TD
     end
 
     subgraph Client Tier
-        Mobile[Mobile App (Expo)]
-        Web[Web Dashboard (Next.js)]
+        Mobile["Mobile App (Expo)"]
+        Web["Web Dashboard (Next.js)"]
     end
 
     subgraph Core Modules
         AuthM[Authentication]
         EventsM[Events]
-        AttendanceM[Attendance & QR]
+        AttendanceM["Attendance & QR"]
         LeaderboardM[Leaderboard]
         NotificationsM[Notifications]
         ClubsM[Club Management]
     end
 
-    subgraph Service Tier (Supabase)
-        API[PostgREST API & Edge Functions]
-        RLS[Row Level Security]
+    subgraph Service Tier Supabase
+        API["PostgREST API & Edge Functions"]
+        RLS["Row Level Security"]
     end
 
     subgraph Data Tier
-        DB[(PostgreSQL)]
-        Storage[(Object Storage)]
+        DB[("PostgreSQL")]
+        Storage[("Object Storage")]
     end
 
     Student --> Mobile

@@ -27,7 +27,13 @@ The following core architectural domains have been completely documented, strict
 1. **Database Architecture** (`docs/database/`): 21+ documents covering ER diagrams, indexes, queues, JSONB rules, PostGIS geofencing, soft-delete views, and registration `SELECT FOR UPDATE` locks.
 2. **API & Security Architecture** (`docs/api/`, `docs/security/`): Strict "Zero Trust" model, PGMQ integration, edge functions, live role resolution without JWT claim storage, and comprehensive Table Policy Matrices.
 3. **Mobile Navigation Architecture** (`docs/mobile/`): Context-aware Home feed driven by `get_home_feed()` delta-sync, 5-tier Priority System, Pessimistic Registration, Waitlist states, and exact Domain Governance (Profile vs Campus).
-4. **Events & Attendance Models**: Defined generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, and HMAC validations.\n5. **Dashboard Navigation Architecture** (`docs/dashboard/`): Single dashboard shell, Command Palette rules, Operations mode, strict routing and governance.\n6. **Design System Architecture** (`docs/design-system/`): Token-driven architecture (Tailwind/NativeWind), Geist typography, swipe-to-checkin, accessibility fallbacks, and multi-campus semantic theming.\n7. **Merit-Based Leaderboard System** (`docs/features/leaderboard/`): Derived point models, abuse prevention, and strictly audited role assignments.\n8. **Component Inventory Architecture** (`docs/ui/`): Frozen catalog of 75+ React Native and Next.js components, establishing the official frontend blueprint.\n9. **Product Surface Architecture**: Finalized screen workflows, including attendance disputes, leadership handovers, multi-club mapping, and strict pessimistic UI validation.
+4. **Events & Attendance Models**: Defined generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, and HMAC validations.
+5. **Dashboard Navigation Architecture** (`docs/dashboard/`): Single dashboard shell, Command Palette rules, Operations mode, strict routing and governance.
+6. **Design System Architecture** (`docs/design-system/`): Token-driven architecture (Tailwind/NativeWind), Geist typography, swipe-to-checkin, accessibility fallbacks, and multi-campus semantic theming.
+7. **Merit-Based Leaderboard System** (`docs/features/leaderboard/`): Derived point models, abuse prevention, and strictly audited role assignments.
+8. **Component Inventory Architecture** (`docs/ui/`): Frozen catalog of 75+ React Native and Next.js components, establishing the official frontend blueprint.
+9. **Product Surface Architecture**: Finalized screen workflows, including attendance disputes, leadership handovers, multi-club mapping, and strict pessimistic UI validation.
+10. **Diagram Suite** (`docs/diagrams/`): 22 complete system diagrams covering high-level architecture, user flows, database ERD, security models, and end-to-end request lifecycles.
 
 ## Open Questions
 * Integration strategy for legacy campus systems (if applicable).

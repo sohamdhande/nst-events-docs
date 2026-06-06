@@ -4,23 +4,36 @@ This sequence diagram provides a step-by-step breakdown of the attendance markin
 
 ```mermaid
 sequenceDiagram
-    participant Student
+    autonumber
+    actor Student
     participant App as Mobile App
     participant Backend as Supabase Backend
     participant DB as PostgreSQL Database
     
+    rect rgb(240, 248, 255)
+    Note over Student,App: QR Scan & Location Capture
     Student->>App: Scans Dynamic QR Code
-    App->>App: Captures Geolocation
-    App->>Backend: Submit Attendance (QR payload, Location)
-    Backend->>Backend: Validate HMAC & TOTP
-    Backend->>Backend: Validate Geofence
-    alt Valid Scan
+    App->>App: Captures Device Geolocation
+    end
+    
+    rect rgb(245, 245, 245)
+    Note over App,DB: Server Validation & Verification
+    App->>Backend: Submit Attendance Payload (TOTP, Location)
+    Backend->>Backend: Validate HMAC Signature & TOTP Token
+    Backend->>Backend: Validate Geofence (PostGIS Check)
+    end
+    
+    alt Valid Scan & Location
+        rect rgb(220, 255, 220)
         Backend->>DB: Create Attendance Record
-        DB-->>Backend: Record Created
-        Backend-->>App: Success Response
-        App-->>Student: Show Success Screen
+        DB-->>Backend: Record Created Successfully
+        Backend-->>App: 200 Success Response
+        App-->>Student: Display Success Screen (Confetti!)
+        end
     else Invalid Scan (e.g., Location mismatch)
-        Backend-->>App: Error Response
-        App-->>Student: Show Error / Prompt Dispute
+        rect rgb(255, 230, 230)
+        Backend-->>App: 400 Error Response
+        App-->>Student: Display Error / Prompt Dispute Flow
+        end
     end
 ```

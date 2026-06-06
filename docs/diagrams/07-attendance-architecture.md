@@ -4,11 +4,11 @@ This diagram illustrates the core components of the dynamic QR attendance system
 
 ```mermaid
 graph TD
-    Session[Attendance Session] -->|Generates| TOTP[Dynamic QR Code (TOTP)]
+    Session["Attendance Session"] -->|Generates| TOTP["Dynamic QR Code (TOTP)"]
     
     subgraph Mobile App
-        Scan[Student Scans QR]
-        Geo[Location Validation (Geofence)]
+        Scan["Student Scans QR"]
+        Geo["Location Validation (Geofence)"]
     end
     
     TOTP --> Scan
@@ -16,9 +16,9 @@ graph TD
     Geo --> ServerValidation
     
     subgraph Backend
-        ServerValidation[Server Validation (HMAC, Geofence Check)]
-        Record[Attendance Record Created]
-        Leaderboard[Leaderboard Impact Calculated]
+        ServerValidation["Server Validation (HMAC, Geofence Check)"]
+        Record["Attendance Record Created"]
+        Leaderboard["Leaderboard Impact Calculated"]
     end
     
     ServerValidation -->|Success| Record

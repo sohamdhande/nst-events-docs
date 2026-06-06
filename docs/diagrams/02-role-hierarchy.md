@@ -15,10 +15,10 @@ graph TD
     CoreMember --> Member[Member]
     Member --> Student[Student]
     
-    classDef admin fill:#f9d0c4,stroke:#333,stroke-width:2px;
-    classDef faculty fill:#fff2cc,stroke:#333,stroke-width:2px;
-    classDef club fill:#d9ead3,stroke:#333,stroke-width:2px;
-    classDef student fill:#cfe2f3,stroke:#333,stroke-width:2px;
+    classDef admin fill:#ff4d4d,color:#fff,stroke:#cc0000,stroke-width:2px;
+    classDef faculty fill:#ff9933,color:#fff,stroke:#cc6600,stroke-width:2px;
+    classDef club fill:#33cc33,color:#fff,stroke:#009900,stroke-width:2px;
+    classDef student fill:#3399ff,color:#fff,stroke:#0066cc,stroke-width:2px;
     
     class PlatformAdmin admin;
     class FacultyAdmin,FacultyMentor faculty;

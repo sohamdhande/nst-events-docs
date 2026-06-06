@@ -13,15 +13,15 @@ graph TD
     end
 
     subgraph Client Applications
-        MobileApp[Mobile App (Expo React Native)]
-        Dashboard[Web Dashboard (Next.js)]
+        MobileApp["Mobile App (Expo React Native)"]
+        Dashboard["Web Dashboard (Next.js)"]
     end
 
     subgraph Backend Infrastructure
-        Backend[Backend API / Supabase]
-        Database[(PostgreSQL Database)]
-        Storage[(Supabase Storage)]
-        Notifications[Notification Service / pgmq]
+        Backend["Backend API / Supabase"]
+        Database[("PostgreSQL Database")]
+        Storage[("Supabase Storage")]
+        Notifications["Notification Service / pgmq"]
     end
 
     subgraph External Integrations
