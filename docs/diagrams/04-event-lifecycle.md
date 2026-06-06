@@ -8,18 +8,19 @@ graph TD
     classDef pending fill:#fef08a,stroke:#eab308,stroke-width:2px,color:#854d0e
     classDef published fill:#bbf7d0,stroke:#22c55e,stroke-width:2px,color:#166534
     classDef archived fill:#e5e7eb,stroke:#6b7280,stroke-width:2px,color:#1f2937
+    classDef startNode fill:#333,stroke:#333,color:#fff,shape:circle
 
+    Start(( )):::startNode
     Draft["DRAFT"]:::draft
     Pending["PENDING APPROVAL"]:::pending
     Published["PUBLISHED"]:::published
     Archived["ARCHIVED"]:::archived
 
-    Draft -->|Club Admin / Core Member Creates| Draft
+    Start -->|Club Admin Creates| Draft
     Draft -->|Club Admin Submits| Pending
+    Pending -->|Mentor Approves| Published
+    Published -->|Event Completes| Archived
     
-    Pending -->|Faculty Mentor / Admin Approves| Published
-    Pending -->|Faculty Mentor / Admin Rejects| Draft
-    
-    Published -->|Event Completes / Admin Archives| Archived
-    Published -->|Admin Cancels| Draft
+    Pending -.->|Mentor Rejects| Draft
+    Published -.->|Admin Cancels| Draft
 ```
