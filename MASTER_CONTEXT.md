@@ -43,12 +43,3 @@ The following core architectural domains have been completely documented, strict
 * **Architecture Phase**: Completed. The documentation repository acts as the complete, implementation-grade blueprint.
 * **Implementation Phase**: Ready to commence `.sql` migrations, Edge Function development, and React Native UI prototyping based on the frozen documents.
 
-## Team Structure
-* **Total Size**: 6 Developers
-* **Roles**: 
-  * Frontend (Mobile)
-  * Frontend (Web)
-  * Backend/Database
-  * UI/UX Design
-  * QA/Testing
-  * Project/Product Manager
