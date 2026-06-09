@@ -11,6 +11,7 @@ It contains all architectural decisions, project planning, meeting notes, resear
 The repository is organized as follows to ensure scalability and maintainability:
 
 * **`/docs`**: Core system documentation. This is heavily populated with V1 Frozen Architecture:
+  * `/docs/backend/`: Primary implementation blueprint for developers (Roadmap, Task Breakdown, Prisma schemas, API contracts).
   * `/docs/architecture/`: High-level stack and system definitions.
   * `/docs/database/`: Complete schema, indexes, queries, relationships.
   * `/docs/api/`: Routing, RPC catalogs, Express route handlers, queues.
@@ -28,7 +29,7 @@ The repository is organized as follows to ensure scalability and maintainability
 
 ## How To Use This Repository
 1. **Start Here**: Read the `MASTER_CONTEXT.md` for the current state of the project.
-2. **Reviewing V1**: To understand how the app works, read the `docs/api/`, `docs/database/`, `docs/security/`, and `docs/mobile/` sections. All of these have been frozen for V1 development and contain implementation-grade specifics.
+2. **Reviewing V1**: To understand how the app works, read the `docs/backend/`, `docs/database/`, `docs/api/`, and `docs/security/` sections. The `docs/backend/` folder contains the explicit, step-by-step roadmap and task breakdown required to build the application.
 3. **Making a Decision**: Any significant technical decision must be recorded as an ADR in `/adrs` using the `ADR-000-template.md`.
 4. **Planning Work**: Use `/planning` to document sprint goals and deliverables.
 

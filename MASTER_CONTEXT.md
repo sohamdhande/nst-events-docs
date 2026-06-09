@@ -20,7 +20,7 @@ NST-Events is a production-grade campus platform for Newton School of Technology
 | **Storage** | **Deferred to post-V1** | No file uploads in V1. V1 uses default/generated fallback assets. See ADR-008 |
 | **Notifications** | Expo Push via `nst-worker` + pgmq | Async delivery, 5s polling interval |
 | **TypeScript Types** | Prisma-generated | Schema-first; types auto-generated via `prisma generate` |
-| **Deployment** | NST Cluster (5-node K3s, NST Pune) | `*.nstsdc.org` via Cloudflare Tunnel |
+| **Deployment** | NST Cluster (K3s worker nodes: 8GB RAM) | 2-node CNPG Postgres + external S3 backup (OOM prevention) |
 | **Local Dev** | Docker Compose | Express + PostgreSQL, single command |
 
 ---
@@ -70,16 +70,17 @@ RLS is a guardrail, not a full authorization system. Express makes the primary p
 
 ## Finalized Architecture Domains (FROZEN V1)
 
-1. **Database Architecture** (`docs/database/`): 20+ documents covering ER diagrams, indexes, queues, JSONB rules, PostGIS geofencing, soft-delete views, and registration `SELECT FOR UPDATE` locks.
-2. **API & Security Architecture** (`docs/api/`, `docs/security/`): Express RBAC + RLS dual-layer model, pgmq integration, Express route handlers, live role resolution, Table Policy Matrices, JWT & session strategy.
-3. **Mobile Navigation** (`docs/mobile/`): `get_home_feed()` delta-sync, Pessimistic Registration, Waitlist states, Domain Governance.
-4. **Events & Attendance Models**: Generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, HMAC validation.
-5. **Dashboard Navigation** (`docs/dashboard/`): Single shell, Command Palette, Operations mode, strict routing.
-6. **Design System** (`docs/design-system/`): Token-driven, Geist typography, NativeWind, accessibility.
-7. **Leaderboard** (`docs/features/leaderboard/`): Materialized views, abuse prevention, audited role assignments.
-8. **Component Inventory** (`docs/ui/`): 75+ React Native and Next.js components.
-9. **Product Surface**: Dispute flows, leadership handovers, multi-club events.
-10. **Diagram Suite** (`docs/diagrams/`): 22 Mermaid diagrams.
+1. **Backend Implementation Blueprint** (`docs/backend/`): The canonical, step-by-step implementation guide containing the Roadmap, Repository Structure, Prisma Schema Plan, API Contract Freeze, Development Order, and exhaustive Task Breakdown.
+2. **Database Architecture** (`docs/database/`): 20+ documents covering ER diagrams, indexes, queues, JSONB rules, PostGIS geofencing, soft-delete views, and atomic capacity update locks (no `SELECT FOR UPDATE`).
+3. **API & Security Architecture** (`docs/api/`, `docs/security/`): Express RBAC + RLS dual-layer model, pgmq integration, live role resolution, Table Policy Matrices, JWT & session strategy (with Token Family Revocation).
+4. **Mobile Navigation** (`docs/mobile/`): `get_home_feed()` delta-sync, Pessimistic Registration, Waitlist states, Domain Governance.
+5. **Events & Attendance Models**: Generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, HMAC validation.
+6. **Dashboard Navigation** (`docs/dashboard/`): Single shell, Command Palette, Operations mode, strict routing.
+7. **Design System** (`docs/design-system/`): Token-driven, Geist typography, NativeWind, accessibility.
+8. **Leaderboard** (`docs/features/leaderboard/`): Materialized views aggregating `leaderboard_scores`, abuse prevention, audited role assignments.
+9. **Component Inventory** (`docs/ui/`): 75+ React Native and Next.js components.
+10. **Product Surface**: Dispute flows, leadership handovers, multi-club events.
+11. **Diagram Suite** (`docs/diagrams/`): 22 Mermaid diagrams.
 
 ---
 
@@ -93,8 +94,8 @@ RLS is a guardrail, not a full authorization system. Express makes the primary p
 ---
 
 ## Active Phase
-- **Architecture Phase**: Complete. This repository is the implementation-grade blueprint.
-- **Implementation Phase**: Ready to start. Priority: Prisma schema → Express scaffolding → RBAC middleware → PostgreSQL migrations (RLS + RPCs) → Mobile UI.
+- **Architecture Phase**: Complete. This repository is the implementation-grade blueprint (10/10 Readiness Score).
+- **Implementation Phase**: Ready to start. Use the `docs/backend/` blueprint to initialize the Turborepo and begin the Database Foundation phase.
 
 ---
 
