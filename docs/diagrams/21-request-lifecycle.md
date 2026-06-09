@@ -19,8 +19,8 @@ sequenceDiagram
         API-->>Mobile: Error Message
     else Authorized
         RBAC->>RPC: Call register_event()
-        RPC->>DB: Lock Event Row (SELECT FOR UPDATE)
-        DB->>DB: Check Capacity
+        RPC->>DB: Atomic Capacity Update (registration_count + 1)
+        DB->>DB: Check Constraints
         alt Full
             DB->>DB: Create Waitlist Record
             DB-->>RPC: Waitlisted Status

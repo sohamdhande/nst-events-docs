@@ -18,9 +18,12 @@ graph TD
     RLS --> Database[("PostgreSQL Database")]
     RPC --> Database
 
-    subgraph Express Backend
+    subgraph Express API Service
         API
         RBAC
+    end
+
+    subgraph Notification Worker Service
         Worker["Background Worker (pgmq polling)"]
     end
 

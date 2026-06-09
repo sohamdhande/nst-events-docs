@@ -13,10 +13,14 @@ graph TD
         Competition[Competition Results]
     end
     
-    Sources --> Calculation[Leaderboard Calculation Engine]
+    Sources --> RPC[PostgreSQL RPC]
+    RPC --> ScoresTable[(leaderboard_scores table)]
     
-    Calculation --> Individual[Individual Leaderboard]
-    Calculation --> Club[Club Leaderboard]
+    ScoresTable -->|pg_cron staggered refresh| IndivMV[(student_leaderboard_mv)]
+    ScoresTable -->|pg_cron staggered refresh| ClubMV[(club_leaderboard_mv)]
+    
+    IndivMV --> Individual[Individual Leaderboard API]
+    ClubMV --> Club[Club Leaderboard API]
     
     Individual --> Rewards[Recognition & Rewards]
     Club --> Funding[Club Funding / Status]

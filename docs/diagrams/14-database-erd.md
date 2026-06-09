@@ -4,7 +4,6 @@ This Entity-Relationship Diagram outlines the core database entities and their r
 
 ```mermaid
 erDiagram
-    USERS ||--o{ ROLES : "has"
     USERS ||--o{ CLUB_MEMBERSHIPS : "belongs to"
     CLUBS ||--o{ CLUB_MEMBERSHIPS : "has"
     
@@ -15,13 +14,20 @@ erDiagram
     EVENTS ||--o{ EVENT_REGISTRATIONS : "has"
     USERS ||--o{ EVENT_REGISTRATIONS : "registers for"
     
+    EVENTS ||--o{ TEAMS : "has"
+    TEAMS ||--o{ EVENT_REGISTRATIONS : "groups"
+
     EVENTS ||--o{ ATTENDANCE_SESSIONS : "has"
     ATTENDANCE_SESSIONS ||--o{ ATTENDANCE_RECORDS : "generates"
     USERS ||--o{ ATTENDANCE_RECORDS : "marks"
     
-    ATTENDANCE_RECORDS ||--o{ ATTENDANCE_DISPUTES : "can have"
+    USERS ||--o{ ATTENDANCE_DISPUTES : "can have"
+    ATTENDANCE_SESSIONS ||--o{ ATTENDANCE_DISPUTES : "can have"
     
     USERS ||--o{ NOTIFICATIONS : "receives"
+    USERS ||--o{ PUSH_TOKENS : "registers"
     
-    USERS ||--|| LEADERBOARD : "has rank"
+    USERS ||--o{ LEADERBOARD_SCORES : "earns"
+    LEADERBOARD_SCORES }o--|| CLUB_LEADERBOARD_MV : "aggregates into"
+    LEADERBOARD_SCORES }o--|| STUDENT_LEADERBOARD_MV : "aggregates into"
 ```

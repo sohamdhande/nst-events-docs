@@ -16,11 +16,17 @@ graph TD
         end
     end
 
-    subgraph Express Backend
+    subgraph Express API Service
         Auth["Google OAuth via Express"]
         RBAC["RBAC Middleware"]
         Routes["Express Route Handlers"]
+    end
+
+    subgraph Notification Worker Service
         Worker["Background Worker (pgmq)"]
+    end
+
+    subgraph Infrastructure
         DB[("PostgreSQL Database")]
         Storage["File Storage (Deferred — Not in V1)"]
     end
