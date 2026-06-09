@@ -1,23 +1,26 @@
-# Edge Function Catalog
+# Express Route Handler Catalog
 
-## `generate_qr`
-* **Purpose**: Generates the live rotating TOTP payload for display on the organizer's screen.
-* **Trigger**: HTTP GET
+## `POST /attendance/generate-qr`
+* **Purpose**: Generates the live rotating TOTP payload for display on the organizer's screen during Operations Mode.
+* **Trigger**: HTTP POST from authenticated Dashboard client.
 * **Inputs**: `session_id`
-* **Outputs**: Encrypted QR Payload, Expiry.
-* **Dependencies**: Redis (Rate limiting / Caching), Crypto modules.
-* **Security Considerations**: Enforces `CLUB_ADMIN` role check.
+* **Outputs**: Encrypted QR payload, expiry timestamp.
+* **Dependencies**: Node.js `crypto` / TOTP library.
+* **Security**: RBAC middleware enforces `CLUB_ADMIN` or `CORE_MEMBER` role before handler executes.
 
-## `notification_worker`
-* **Purpose**: Empties the `pgmq` and sends payloads to Expo.
-* **Trigger**: Cron / Webhook.
-* **Dependencies**: Expo Push Server.
-* **Security Considerations**: Runs with internal service keys.
+## `nst-worker` Deployment — `notificationWorker`
+* **Purpose**: Polls the `pgmq` notification queue and dispatches payloads to the Expo Push API.
+* **Deployment**: Separate Kubernetes Deployment (`nst-worker`, 1 replica). **Not** part of the `nst-api` pod. See `docs/api/13-worker-deployment.md`.
+* **Poll interval**: Every 5 seconds, batch of up to 100 messages.
+* **Dependencies**: Prisma (PostgreSQL), Expo Push API, `EXPO_ACCESS_TOKEN` secret.
+* **Security**: Runs with server-level database credentials. Not exposed as an HTTP endpoint. No ingress rule.
 
-## `slack_webhook`
-* **Purpose**: Notifies the Faculty channel when a new event requires approval.
-* **Trigger**: Database Webhook on `events` table (status = PENDING_APPROVAL).
+## `POST /admin/webhooks/slack`
+* **Purpose**: Notifies the Faculty channel when a new event requires approval (`PENDING_APPROVAL`).
+* **Trigger**: Called internally by the `approve_event` route handler after state transition.
+* **Security**: Internal call; not client-accessible.
 
-## `leaderboard_recalculation`
+## `POST /admin/leaderboard/recalculate`
 * **Purpose**: Re-aggregates club points across the entire season if anomalies are detected.
-* **Trigger**: Manual HTTP by Platform Admin.
+* **Trigger**: Manual HTTP POST by Platform Admin via Dashboard.
+* **Security**: RBAC middleware enforces `PLATFORM_ADMIN` role.

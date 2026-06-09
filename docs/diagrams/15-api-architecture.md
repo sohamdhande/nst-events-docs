@@ -1,20 +1,28 @@
 # 15 API / RPC Architecture
 
-This diagram shows the flow of requests from client applications through the Supabase Backend and RPC layers to the underlying database, utilizing Row Level Security (RLS).
+This diagram shows the flow of requests from client applications through the Express API and RLS layers to the underlying database.
 
 ```mermaid
 graph TD
     Mobile["Mobile App (Expo)"]
     Dashboard["Dashboard (Next.js)"]
-    
-    Mobile -->|GraphQL/REST API| API["Supabase PostgREST API"]
-    Dashboard -->|GraphQL/REST API| API
-    
-    Mobile -->|RPC Calls| RPC["Supabase RPC / Edge Functions"]
-    Dashboard -->|RPC Calls| RPC
-    
-    API --> RLS["PostgreSQL Row Level Security (RLS)"]
-    RPC --> RLS
-    
+
+    Mobile -->|REST API| API["Express API"]
+    Dashboard -->|REST API| API
+
+    API -->|RBAC Middleware| RBAC["Role Resolution"]
+
+    RBAC -->|Simple Prisma Query| RLS["PostgreSQL Row Level Security (RLS)"]
+    RBAC -->|Complex Atomic Operation| RPC["PostgreSQL RPC (stored procedure)"]
+
     RLS --> Database[("PostgreSQL Database")]
+    RPC --> Database
+
+    subgraph Express Backend
+        API
+        RBAC
+        Worker["Background Worker (pgmq polling)"]
+    end
+
+    Worker -->|pgmq| Database
 ```

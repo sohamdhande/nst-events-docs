@@ -18,9 +18,9 @@ graph TD
     end
 
     subgraph Backend Infrastructure
-        Backend["Backend API / Supabase"]
+        Backend["Backend API / Express Backend"]
         Database[("PostgreSQL Database")]
-        Storage[("Supabase Storage")]
+        Storage[("File Storage (Deferred — Not in V1)")]
         Notifications["Notification Service / pgmq"]
     end
 

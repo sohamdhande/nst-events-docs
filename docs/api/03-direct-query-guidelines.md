@@ -1,21 +1,27 @@
-# Direct Query Guidelines
+# Express API Routing Guidelines
 
-## What IS Allowed
-Direct Supabase PostgREST queries should be used for simple data retrieval and basic inserts where no complex business logic or capacity locking is required.
+## Architecture Principle
+All client requests go to the Express backend. There are no "direct queries" — the concept of a client querying the database directly no longer exists. Express is the only entry point into the data layer.
+
+## When to Use a Simple Express Route Handler
+Standard route handlers with a straightforward Prisma query are appropriate for operations that require no complex transactional logic or external calls.
 
 **Examples:**
-* Event listings feed (`SELECT * FROM events WHERE status = 'PUBLISHED'`)
-* Club listing and discovery
-* Fetching the individual and club leaderboards
-* Fetching a user's own profile and club memberships
-* Fetching personal unread notifications
-* Updating user profile display name
+* `GET /events` — fetch published events (Prisma `findMany` with RLS via session variable)
+* `GET /clubs` — club listing and discovery
+* `GET /leaderboard` — individual and club leaderboard reads
+* `GET /users/me` — fetch authenticated user's own profile and club memberships
+* `GET /notifications` — fetch personal unread notifications
+* `PATCH /users/me` — update user profile display name
 
-## What Must NEVER Use Direct Queries
-Operations that require atomic state changes, capacity validation, deep role resolution, or interacting with external services.
+## When to Call a PostgreSQL RPC from Express
+Operations that require atomic state changes, capacity validation, or complex multi-table transactions must invoke a PostgreSQL stored procedure via Prisma's `$queryRaw` / `$executeRaw`, not a plain Prisma model call.
 
-**Examples of FORBIDDEN Direct Queries:**
-* **`INSERT INTO event_registrations`**: Bypasses capacity limits. MUST use RPC.
-* **`INSERT INTO attendance_records`**: Bypasses QR and Geofence checks. MUST use RPC/Edge.
-* **`UPDATE events SET status = 'PUBLISHED'`**: Bypasses the approval workflow logic. MUST use RPC.
-* **`DELETE FROM club_memberships`**: Can orphan teams or events. MUST use RPC.
+**Examples of operations that MUST use RPCs (called server-side by Express):**
+* **`register_event`**: Requires `SELECT FOR UPDATE` capacity lock. A plain Prisma insert would bypass capacity guarantees.
+* **`mark_attendance`**: Requires atomic TOTP validation, geofence check, device collision detection, and record write. Must be an RPC.
+* **`approve_event`**: Triggers state machine transitions with audit logging. Must be atomic.
+* **`delete_club_membership`**: Can orphan teams or events. Requires transactional cleanup logic.
+
+## Key Distinction
+In both cases above, the **client always talks to Express**. The difference is only in what Express does internally — whether it runs a simple Prisma query or calls a PostgreSQL stored procedure. This is an internal implementation detail invisible to the client.

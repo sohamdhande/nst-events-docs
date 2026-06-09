@@ -13,7 +13,7 @@ The repository is organized as follows to ensure scalability and maintainability
 * **`/docs`**: Core system documentation. This is heavily populated with V1 Frozen Architecture:
   * `/docs/architecture/`: High-level stack and system definitions.
   * `/docs/database/`: Complete schema, indexes, queries, relationships.
-  * `/docs/api/`: Routing, RPC catalogs, Edge Functions, queues.
+  * `/docs/api/`: Routing, RPC catalogs, Express route handlers, queues.
   * `/docs/security/`: RLS architecture, JWT strategy, threat models.
   * `/docs/mobile/`: Mobile UX navigation, priorities, state management.
   * `/docs/dashboard/`: Web Dashboard soft navigation, Operations mode, routing rules.

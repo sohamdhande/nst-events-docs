@@ -19,7 +19,7 @@ All diagrams are generated using [Mermaid.js](https://mermaid.js.org/) syntax fo
 * **[12-dashboard-architecture.md](./12-dashboard-architecture.md)**: Structure of the Next.js web dashboard.
 * **[13-operations-mode.md](./13-operations-mode.md)**: Features of the real-time event operations view.
 * **[14-database-erd.md](./14-database-erd.md)**: High-level entity-relationship diagram for PostgreSQL.
-* **[15-api-architecture.md](./15-api-architecture.md)**: Supabase API and Edge Functions architecture.
+* **[15-api-architecture.md](./15-api-architecture.md)**: Express API, RBAC middleware, RPC, and RLS architecture.
 * **[16-security-architecture.md](./16-security-architecture.md)**: Authentication, RLS, and security layers.
 * **[17-mobile-navigation.md](./17-mobile-navigation.md)**: Navigation structure for the Expo app.
 * **[18-dashboard-navigation.md](./18-dashboard-navigation.md)**: Navigation map for the web dashboard.

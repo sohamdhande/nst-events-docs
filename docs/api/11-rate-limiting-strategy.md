@@ -1,15 +1,17 @@
 # Rate Limiting Strategy
 
-Rate limiting is enforced at the Supabase API Gateway and within specific Edge Functions.
+Rate limiting is enforced at the **Express API** layer via middleware (e.g., `express-rate-limit`). Limits are applied per user ID (authenticated) or per IP (unauthenticated).
 
 ## Defined Limits
-* **Authentication**: Supabase default limits (e.g., 30 OTP requests/hour).
-* **Attendance (`mark_attendance`)**: 5 requests per minute per user (prevents brute-forcing the QR TOTP).
-* **Registrations**: 10 requests per minute per user.
-* **Team Operations**: 20 requests per hour.
-* **Media Uploads**: 10 uploads per hour per user.
-* **Admin Actions**: High limits (100/min) for Dashboard users.
-* **Notifications**: Clubs restricted to 2 broadcasts per week.
+* **Authentication** (`POST /auth/callback`): 10 requests per minute per IP — prevents brute-force OAuth abuse.
+* **Attendance** (`POST /attendance/mark`): 5 requests per minute per user — prevents brute-forcing the QR TOTP window.
+* **QR Generation** (`POST /attendance/generate-qr`): 10 requests per minute per user.
+* **Registrations** (`POST /events/:id/register`): 10 requests per minute per user.
+* **Team Operations**: 20 requests per hour per user.
+* **Media Uploads** (pre-signed URL generation): 10 requests per hour per user.
+* **Admin Actions**: Higher limits (100/min) for authenticated Dashboard users with Admin roles.
+* **Notifications**: Clubs restricted to 2 broadcast notifications per week (enforced at the service layer, not the HTTP rate limiter).
 
 ## Documented Reasoning
-The limits protect the database from connection exhaustion and prevent malicious actors from scripting mass-registrations to block legitimate students from attending limited-capacity events.
+These limits protect the database from connection exhaustion and prevent malicious actors from scripting mass-registrations to block legitimate students from attending limited-capacity events. The QR attendance limit specifically prevents TOTP brute-forcing within the 15-second validity window.
+

@@ -1,10 +1,13 @@
 # RLS Strategy
 
 ## Authentication Model
-The platform uses Supabase Auth, mapping JWTs to the `auth.uid()`. 
+The platform uses Google OAuth 2.0 via Express. After OAuth, the Express backend issues a JWT. On each request, the Express RBAC middleware verifies the JWT and sets `current_setting('app.user_id')` via a Prisma middleware before any query executes.
 
 ## Hybrid RBAC & JWT Roles
-We rely heavily on contextual Database Roles verified via queries inside the RLS policy. Example: `auth.uid() IN (SELECT user_id FROM club_memberships WHERE role = 'CLUB_ADMIN')`.
+We rely on contextual role resolution via queries inside the RLS policy. Example using the `current_user_id()` helper (see `docs/security/01-rls-architecture.md`):
+```sql
+current_user_id() IN (SELECT user_id FROM club_memberships WHERE role = 'CLUB_ADMIN')
+```
 
 ## RLS Principles
 1. Default Deny All.

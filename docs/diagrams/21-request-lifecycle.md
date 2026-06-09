@@ -6,32 +6,30 @@ This sequence diagram exemplifies a complete request lifecycle, specifically det
 sequenceDiagram
     participant Student
     participant Mobile as Mobile App
-    participant API as Supabase API
-    participant RPC as Edge Functions / RPC
-    participant RLS as Row Level Security
+    participant API as Express API
+    participant RBAC as RBAC Middleware
+    participant RPC as PostgreSQL RPC
     participant DB as Database
-    
+
     Student->>Mobile: Clicks "Register"
-    Mobile->>API: POST /rest/v1/event_registrations
-    API->>RPC: Call register_for_event()
-    RPC->>RLS: Validate Session & Permissions
+    Mobile->>API: POST /events/:id/register
+    API->>RBAC: Verify JWT & Resolve Role
     alt Unauthorized
-        RLS-->>RPC: Reject Access
-        RPC-->>API: 403 Forbidden
+        RBAC-->>API: 403 Forbidden
         API-->>Mobile: Error Message
     else Authorized
-        RLS->>DB: Execute Transaction
-        DB->>DB: Lock Event Row (SELECT FOR UPDATE)
+        RBAC->>RPC: Call register_event()
+        RPC->>DB: Lock Event Row (SELECT FOR UPDATE)
         DB->>DB: Check Capacity
         alt Full
             DB->>DB: Create Waitlist Record
-            DB-->>RLS: Waitlisted Status
+            DB-->>RPC: Waitlisted Status
         else Available
             DB->>DB: Create Registration Record
-            DB-->>RLS: Registered Status
+            DB-->>RPC: Registered Status
         end
-        RLS-->>RPC: Success Result
-        RPC-->>API: 200 OK / Response Payload
+        RPC-->>RBAC: Success Result
+        RBAC-->>API: 200 OK / Response Payload
         API-->>Mobile: Update UI Status
         Mobile-->>Student: Show Success/Waitlist
     end

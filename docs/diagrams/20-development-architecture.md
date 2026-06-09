@@ -9,43 +9,41 @@ graph TD
             Expo["Expo React Native App"]
             NextJS["Web Dashboard (Next.js)"]
         end
-        
+
         subgraph Packages
-            Types["Shared Types & Interfaces"]
+            Types["Shared Prisma-generated Types"]
             UI["Shared Design System & Components"]
         end
     end
-    
-    subgraph Supabase
-        Auth["Supabase Auth"]
+
+    subgraph Express Backend
+        Auth["Google OAuth via Express"]
+        RBAC["RBAC Middleware"]
+        Routes["Express Route Handlers"]
+        Worker["Background Worker (pgmq)"]
         DB[("PostgreSQL Database")]
-        Functions["Edge Functions"]
-        Storage["Supabase Storage"]
+        Storage["File Storage (Deferred — Not in V1)"]
     end
-    
+
     Expo --> Types
     NextJS --> Types
-    
+
     Expo --> UI
     NextJS --> UI
-    
-    Expo --> Auth
-    NextJS --> Auth
-    
-    Expo --> DB
-    NextJS --> DB
-    
-    Expo --> Functions
-    NextJS --> Functions
-    
-    Expo --> Storage
-    NextJS --> Storage
-    
+
+    Expo -->|REST API| Routes
+    NextJS -->|REST API| Routes
+
+    Routes --> RBAC
+    RBAC --> DB
+
+    Worker -->|pgmq polling| DB
+
     classDef app fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e;
     classDef pkg fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#713f12;
     classDef sba fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d;
-    
+
     class Expo,NextJS app;
     class Types,UI pkg;
-    class Auth,DB,Functions,Storage sba;
+    class Auth,RBAC,Routes,Worker,DB,Storage sba;
 ```

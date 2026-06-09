@@ -1,12 +1,17 @@
 # RPC Catalog
 
+> **Execution Context**: All RPCs listed here are called from Express route handlers via Prisma `$queryRaw` / `$executeRaw`. Every call **must** be wrapped in `withUserContext(req.user.id, ...)` (see `docs/security/01-rls-architecture.md`) so that `current_user_id()` resolves to the authenticated user inside the transaction. Calling an RPC outside `withUserContext` results in `current_user_id()` returning `NULL`, which will silently bypass all internal role checks in `SECURITY DEFINER` functions.
+
+---
+
 ## `register_event(p_event_id)`
+
 * **Purpose**: Registers a user for an individual event.
 * **Inputs**: `p_event_id`
-* **Outputs**: `registration_id`, `status`
+* **Outputs**: `registration_id`, `status` (`REGISTERED` or `WAITLISTED`)
 * **Permissions**: Any authenticated student.
-* **Transaction Requirements**: Locks event row, checks capacity, inserts registration.
-* **Tables Touched**: `events`, `event_registrations`.
+* **Transaction Requirements**: Locks event row with `SELECT * FROM events WHERE id = p_event_id FOR UPDATE`. Checks `max_capacity` against `registration_count`. If capacity available (or unlimited): increments `registration_count` and inserts with `REGISTERED`. If full: inserts with `WAITLISTED` without incrementing count. Entire operation is atomic.
+* **Tables Touched**: `events` (lock + update `registration_count`), `event_registrations` (insert).
 
 ## `create_team(p_event_id, p_team_name)`
 * **Purpose**: Creates a team for a hackathon and sets the caller as leader.
@@ -40,7 +45,9 @@
 
 ## `process_waitlist(p_event_id)`
 * **Purpose**: Moves waitlisted users to registered if capacity frees up.
-* **Permissions**: `SECURITY DEFINER` (Called internally via triggers).
+* **Execution**: `SECURITY DEFINER` — runs as DB owner, bypasses RLS on `event_registrations`.
+* **⚠️ Precondition**: Must be called inside `withUserContext(userId, ...)`. `current_user_id()` must resolve to the actor performing the cancellation (or the system actor if called from a trigger). If called outside `withUserContext`, the audit log will record a `NULL` actor_id, which is a bug.
+* **Caller**: Called internally by `delete_registration` flow after a cancellation. Not called directly by clients.
 
 ### `assign_participation_role`
 * **Purpose**: Upgrades a user's role from ATTENDEE to VOLUNTEER, ORGANIZER, etc.
@@ -63,8 +70,9 @@
 ## `resolve_attendance_dispute`
 * **Caller**: Club Admin, Faculty Mentor, Faculty Admin, Platform Admin
 * **Input**: `dispute_id`, `resolution` (APPROVED | REJECTED), `review_notes`
-* **Behavior**: Updates dispute status. If `APPROVED`: creates or updates `attendance_records` row for the student. Updates `reviewed_at` and `reviewed_by`. Appends to `audit_logs`.
-* **Security**: SECURITY DEFINER — this RPC bypasses RLS on `attendance_records` because Club Admin cannot write to that table under normal RLS. Must validate caller role before executing.
+* **Behavior**: Updates dispute status. If `APPROVED`: creates or updates `attendance_records` row for the student with `status = 'EXCUSED'`. Updates `reviewed_at` and `reviewed_by`. Appends to `audit_logs`.
+* **Execution**: `SECURITY DEFINER` — bypasses RLS on `attendance_records` because Club Admin cannot write to that table under normal RLS.
+* **⚠️ Precondition**: **Must be called inside `withUserContext(req.user.id, ...)`**. The function reads `current_user_id()` internally to resolve the caller's role before executing. If called outside `withUserContext`, the role check reads `NULL` and the security guard fails silently. Express middleware must verify the caller role before invoking this RPC, and `withUserContext` must wrap the call.
 
 ## `initiate_leadership_transfer`
 * **Caller**: Club Admin
@@ -73,22 +81,23 @@
 * **Security**: Caller must be current Club Admin of the specified club.
 
 ## `approve_leadership_transfer`
-* **Caller**: Faculty Mentor
+* **Caller**: Faculty Mentor, Faculty Admin (fallback), Platform Admin
 * **Input**: `handover_request_id`
 * **Behavior**: Sets status `APPROVED`. Transfers Club Admin role to `successor_id`. Demotes initiator to Core Member. Appends to `audit_logs`.
-* **Security**: Caller must be Faculty Mentor of the club in the request.
+* **Security**: Caller must be Faculty Mentor of the club in the request. If no Faculty Mentor is assigned to the club, any user with the `FACULTY_ADMIN` global role may approve as a fallback. Platform Admin may always approve.
 
 ## `reject_leadership_transfer`
-* **Caller**: Faculty Mentor
+* **Caller**: Faculty Mentor, Faculty Admin (fallback), Platform Admin
 * **Input**: `handover_request_id`, `review_notes`
 * **Behavior**: Sets status `REJECTED`. Initiator retains Club Admin role.
-* **Security**: Caller must be Faculty Mentor of the club in the request.
+* **Security**: Caller must be Faculty Mentor of the club in the request. Faculty Admin fallback applies when no Faculty Mentor is assigned.
 
 ## `force_transfer_leadership`
 * **Caller**: Platform Admin only
 * **Input**: `club_id`, `new_admin_id`
 * **Behavior**: Bypasses Faculty Mentor approval. Immediately transfers role. Appends to `audit_logs` with FORCED flag.
-* **Security**: Platform Admin only. SECURITY DEFINER.
+* **Execution**: `SECURITY DEFINER` — bypasses RLS on `club_memberships`.
+* **⚠️ Precondition**: **Must be called inside `withUserContext(req.user.id, ...)`**. The function reads `current_user_id()` internally to validate the caller is PLATFORM_ADMIN. Express middleware (`requireRole('PLATFORM_ADMIN')`) must gate the route. `withUserContext` must wrap the Prisma `$queryRaw` call so that `current_user_id()` resolves before the internal role check executes.
 
 ## `submit_event_for_approval`
 * **Caller**: Club Admin, Core Member

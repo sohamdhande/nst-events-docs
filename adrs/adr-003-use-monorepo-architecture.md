@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The platform consists of a mobile app, web dashboard, and serverless backend. Code sharing is highly desirable.
+The platform consists of a mobile app, web dashboard, and Express backend. Code sharing is highly desirable.
 
 ## Decision
 Use Monorepo Architecture.

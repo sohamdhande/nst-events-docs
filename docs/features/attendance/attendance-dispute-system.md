@@ -15,7 +15,7 @@ Legitimate attendance can fail due to hardware malfunctions (dead battery, broke
 * **Review/Resolve**: Club Admin, Faculty Mentor, Faculty Admin (Dashboard)
 
 ## Evidence Handling
-Images are uploaded securely to Supabase Storage with RLS restricting access strictly to the reviewing admins.
+Images are uploaded securely to File Storage (TBD) with RLS restricting access strictly to the reviewing admins.
 
 ## Audit Logging
 Resolving a dispute triggers an `ATTENDANCE_OVERRIDE` and `RESOLVE_DISPUTE` audit log, explicitly recording the admin's `user_id` and the provided evidence link to prevent fraudulent approvals.

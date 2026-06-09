@@ -7,7 +7,7 @@ sequenceDiagram
     autonumber
     actor Student
     participant App as Mobile App
-    participant Backend as Supabase Backend
+    participant Backend as Express Backend
     participant DB as PostgreSQL Database
     
     rect rgb(240, 248, 255)

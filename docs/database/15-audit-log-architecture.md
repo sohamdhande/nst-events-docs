@@ -3,6 +3,7 @@
 ## Table Structure
 **`audit_logs`**
 * `id BIGSERIAL PRIMARY KEY` (Using BIGSERIAL instead of UUID for strict chronological ordering and performance on massive inserts).
+* `actor_id UUID` — populated by the audit trigger using `current_user_id()`, which reads the `app.user_id` session variable set by the `withUserContext` transaction wrapper. All mutating API queries must run inside this wrapper. A `NULL` actor indicates a bug.
 * `action`: (e.g., "DELETE_CLUB", "OVERRIDE_ATTENDANCE")
 * `previous_state` / `new_state`: JSONB snapshots.
 

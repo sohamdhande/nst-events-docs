@@ -1,10 +1,10 @@
 # Notification Architecture
 
 ## Queue Flow
-1. **Trigger**: An RPC (e.g., `approve_event`) inserts a message into the `pgmq` queue table atomically.
-2. **Poll**: The `notification_worker` Edge Function pulls messages in batches of 100.
-3. **Delivery**: The worker requests the Expo Push API.
-4. **Finalization**: Success/Fail states are written back to the `notifications` table.
+1. **Trigger**: An RPC (e.g., `approve_event`) inserts a message into the `pgmq` queue table atomically within the same transaction.
+2. **Poll**: The `nst-worker` Kubernetes Deployment polls pgmq every 5 seconds (batch of 100 messages). See `docs/api/13-worker-deployment.md` for the full deployment model.
+3. **Delivery**: The worker calls the Expo Push API.
+4. **Finalization**: Success/Fail states are written back to the `notifications` table via Prisma.
 
 ## Push Delivery & In-App Lifecycle
 All critical alerts are written to the `notifications` table (In-App) *first*. Push delivery is treated as an enhancement. If Push fails, the user still sees the notification inside the app.

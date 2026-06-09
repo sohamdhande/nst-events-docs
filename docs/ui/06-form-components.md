@@ -15,4 +15,4 @@ All form inputs must support uncontrolled and controlled React states, with abso
 
 ## Rich Media
 * **RichTextEditor**: Markdown-based editor for event descriptions.
-* **FileUploadDropzone**: Integrates directly with Supabase Storage, featuring progress bars and MIME type validation.
+* **FileUploadDropzone**: Integrates directly with File Storage (TBD), featuring progress bars and MIME type validation.

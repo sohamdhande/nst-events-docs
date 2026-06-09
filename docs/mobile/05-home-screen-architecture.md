@@ -17,8 +17,8 @@ The RPC supports a `last_fetched_at` parameter.
 * **Response**: The backend returns *only changed data* (New notifications, changed event states, new attendance windows, updated announcements).
 
 ### Refresh Strategies
-* **Background Refresh**: Silent delta sync.
-* **Foreground Refresh**: Triggered via WebSockets/Push.
+* **Background Refresh**: Silent delta sync on a polling interval.
+* **Foreground Refresh**: Triggered by SSE push from the Express backend (e.g., a new attendance window opening, a registration slot becoming available).
 * **Pull-to-Refresh**: Forces a hard reset of `last_fetched_at` to guarantee absolute freshness.
 
 ## Dynamic Home States

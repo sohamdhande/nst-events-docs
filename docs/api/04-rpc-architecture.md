@@ -3,6 +3,8 @@
 ## Why RPCs Exist
 Remote Procedure Calls (RPCs) encapsulate complex business logic natively within PostgreSQL functions. They are used when multiple tables must be modified in a single atomic transaction.
 
+**Invocation path**: Clients call the Express API → Express RBAC middleware validates → Express calls the PostgreSQL RPC via Prisma's `$queryRaw` or `$executeRaw`. Clients never call RPCs directly.
+
 ## Transaction Requirements
 All RPCs must guarantee atomicity. If any part of an RPC fails (e.g., an audit log fails to write), the entire transaction rolls back.
 

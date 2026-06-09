@@ -1,10 +1,15 @@
 # Leaderboard Data Model
 
 ## Derived Architecture
-The Leaderboard is purely a **Derived View**. Points must never be directly editable. 
+The Leaderboard is purely a **Derived View**, but the materialized views must aggregate **ONLY** from the `leaderboard_scores` table. 
+
+**Canonical Path:**
+`attendance_records` / `event_results` -> RPC -> `leaderboard_scores` -> `materialized views`
+
+Materialized views MUST NEVER aggregate `attendance_records` or `event_registrations` directly. This prevents double-counting and performance degradation.
 
 ## Merit-Based Point Model
-Points are automatically calculated via SQL materialized views based on the following constants:
+Points are inserted into the `leaderboard_scores` table via dedicated RPCs (`award_attendance_points`, `award_competition_points`) based on the following constants:
 
 ### Attendance Roles (from `event_registrations.participation_role`)
 * `ATTENDEE`: +10
@@ -21,6 +26,13 @@ Points are automatically calculated via SQL materialized views based on the foll
 * `RUNNER_UP`: +50
 * `WINNER`: +75
 
+## Materialized View Refresh Strategy
+
+Leaderboard materialized views (`club_leaderboard_mv` and `student_leaderboard_mv`) aggregate **only** the `leaderboard_scores` table.
+They are refreshed **asynchronously** via a `pg_cron` scheduled job every **5 minutes** using `REFRESH MATERIALIZED VIEW CONCURRENTLY`. Views are **never** refreshed by row-level triggers or on individual writes to avoid lock contention.
+
+Platform Admin may also trigger a manual refresh via `POST /admin/leaderboard/recalculate`.
+
 ## Abuse Prevention
-Manual point insertion is strictly prohibited. Points are derived exclusively from verified Attendance Records, Participation Roles, and Competition Results. 
-Only the Platform Admin may perform an `ADJUST_POINTS` RPC for disciplinary reasons, which enforces strict audit logging.
+Manual point insertion is strictly prohibited. Points are derived exclusively via RPCs that validate Attendance Records, Participation Roles, and Competition Results before inserting into `leaderboard_scores`. 
+Only the Platform Admin may perform an `ADJUST_POINTS` RPC for disciplinary reasons, which writes directly to `leaderboard_scores` and enforces strict audit logging.

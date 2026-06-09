@@ -25,14 +25,16 @@ graph TD
         ClubsM[Club Management]
     end
 
-    subgraph Service Tier Supabase
-        API["PostgREST API & Edge Functions"]
-        RLS["Row Level Security"]
+    subgraph Service Tier
+        API["Express REST API"]
+        RBAC["RBAC Middleware"]
+        RLS["Row Level Security (secondary)"]
+        SSE["SSE (Server-Sent Events)"]
     end
 
     subgraph Data Tier
         DB[("PostgreSQL")]
-        Storage[("Object Storage")]
+        Storage[("Object Storage (Deferred — Not in V1)")]
     end
 
     Student --> Mobile
@@ -61,7 +63,10 @@ graph TD
     NotificationsM --> API
     ClubsM --> API
 
-    API --> RLS
+    API --> RBAC
+    RBAC --> RLS
     RLS --> DB
-    RLS --> Storage
+    SSE -->|push updates| Mobile
+    SSE -->|push updates| Web
+    API --> SSE
 ```

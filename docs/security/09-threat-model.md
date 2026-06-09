@@ -12,7 +12,7 @@ Utilizes the STRIDE methodology.
 * External Actors (Attempting data scraping)
 
 ## Threats & Mitigations
-* **S**poofing Identity: Mitigated by strict Supabase JWT verification. (Risk: Low)
+* **S**poofing Identity: Mitigated by strict Express-issued JWT verification. (Risk: Low)
 * **T**ampering with Data: Mitigated by immutable `audit_logs` and RLS locking down `UPDATE` queries. (Risk: Low)
 * **R**epudiation: Mitigated by logging `actor_id` on all critical transactions. (Risk: Low)
 * **I**nformation Disclosure: Mitigated by strict RLS `SELECT` policies on private events and secure documents. (Risk: Medium)
@@ -47,7 +47,7 @@ Utilizes the STRIDE methodology.
   * Club Admin sees a flagged attendances warning in the dashboard.
 
 **Mitigation — Layer 2: JWT single session enforcement**
-  * When Student B logs into Student A's account, Supabase Auth invalidates Student A's existing JWT.
+  * When Student B logs into Student A's account, Google OAuth in Express invalidates Student A's existing JWT.
   * Student A's phone is silently logged out.
   * Creates social accountability on a small campus.
 

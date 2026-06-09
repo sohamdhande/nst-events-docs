@@ -22,28 +22,40 @@ erDiagram
 ```
 
 ## 2. Enums
+> Canonical definitions live in `docs/database/04-enums.md`. Values below match that file exactly.
+
 * `global_role`: `STUDENT`, `FACULTY_ADMIN`, `PLATFORM_ADMIN`
 * `club_role`: `MEMBER`, `CORE_MEMBER`, `CLUB_ADMIN`, `FACULTY_MENTOR`
-* `event_type`: `WORKSHOP`, `HACKATHON`, `GUEST_LECTURE`, `COMPETITION`, `SOCIAL`, `OTHER`
+* `club_status`: `ACTIVE`, `INACTIVE`, `DISSOLVED`
+* `event_type`: `WORKSHOP`, `SEMINAR`, `COMPETITION`, `MEETUP`, `HACKATHON`, `OTHER`
 * `event_state`: `DRAFT`, `PENDING_APPROVAL`, `PUBLISHED`, `ARCHIVED`
 * `event_visibility`: `PUBLIC`, `PRIVATE`
 * `registration_type`: `INDIVIDUAL`, `TEAM`
-* `attendance_status`: `PRESENT`, `ABSENT`, `EXCUSED`
+* `registration_status`: `REGISTERED`, `WAITLISTED`, `CANCELLED`
+* `attendance_status`: `PRESENT`, `ABSENT`, `EXCUSED` — `EXCUSED` is written only by `resolve_attendance_dispute` when `resolution = 'APPROVED'`
 * `attendance_method`: `QR`, `MANUAL`, `SYSTEM`
+* `attendance_type`: `SINGLE`, `MULTI_SESSION`
+* `participation_role`: `ATTENDEE`, `VOLUNTEER`, `ORGANIZER`, `SPEAKER`, `MENTOR`
+* `competition_result`: `WINNER`, `RUNNER_UP`, `SECOND_RUNNER_UP`, `TOP_10`, `PARTICIPANT`
+* `dispute_status`: `PENDING`, `APPROVED`, `REJECTED`
+* `handover_status`: `PENDING`, `APPROVED`, `REJECTED`
 
 ## 3. Tables & Relationships
 
 ### Core Identity & Access
 * **`users`**: Base identity for authentication and profiles.
-  * Columns: `id` (PK, UUID), `auth_id` (FK to Supabase Auth), `email`, `full_name`, `avatar_url`, `global_role` (Enum).
+  * Columns: `id` (PK, UUID — internal platform ID), `google_sub` (TEXT UNIQUE NOT NULL — stable OIDC subject from Google `id_token`; not a FK), `email`, `full_name`, `avatar_url` (TEXT, nullable — `NULL` in V1, file uploads deferred), `global_role` (Enum).
+  * On first OAuth login, Express upserts on `google_sub` to find or create the user.
+* **`refresh_tokens`**: Server-side session storage. Enables revocation without short-lived JWT blocklists.
+  * Columns: `id` (PK, UUID), `user_id` (FK → users.id, CASCADE), `token_hash` (TEXT UNIQUE — SHA-256 of raw token), `expires_at`, `revoked_at`, `user_agent`, `ip_address`.
 * **`clubs`**: Organizations within NST.
-  * Columns: `id` (PK, UUID), `name`, `description`, `banner_url`, `status`, `created_at`.
+  * Columns: `id` (PK, UUID), `name`, `description`, `banner_url` (TEXT, nullable — `NULL` in V1, file uploads deferred), `status`, `created_at`.
 * **`club_memberships`**: Resolves the many-to-many relationship, granting specific RBAC roles per club.
   * Columns: `id` (PK), `user_id` (FK), `club_id` (FK), `role` (Enum: club_role), `joined_at`.
 
 ### Event Domain
 * **`events`**: The core generic event model.
-  * Columns: `id` (PK, UUID), `title`, `description`, `start_time`, `end_time`, `location_name`, `location_geofence` (JSONB/PostGIS), `event_type` (Enum), `state` (Enum: event_state), `visibility` (Enum: event_visibility), `registration_type` (Enum), `metadata` (JSONB), `created_by` (FK), `created_at`.
+  * Columns: `id` (PK, UUID), `title`, `description`, `start_time`, `end_time`, `location_name`, `location_geofence` (JSONB/PostGIS), `event_type` (Enum), `state` (Enum: event_state), `visibility` (Enum: event_visibility), `registration_type` (Enum), `metadata` (JSONB), `attendance_type` (Enum: attendance_type_enum, default `SINGLE`), `is_locked` (Boolean, default false), `max_capacity` (Integer, nullable — `NULL` means unlimited), `registration_count` (Integer, default 0), `created_by` (FK), `created_at`.
 * **`event_clubs`**: Many-to-Many mapping for multi-club collaborative events.
   * Columns: `event_id` (FK), `club_id` (FK), `is_primary` (Boolean).
 * **`event_sessions`**: Granular time blocks (Handles multi-day events or multiple check-ins per event).
@@ -99,7 +111,7 @@ The complex authorization matrix is strictly enforced at the database layer (ADR
 
 * **Users Table**: Users can `SELECT` and `UPDATE` their own row. Public profile fields are visible to all authenticated users.
 * **Events Table**:
-  * `SELECT`: All users can view `PUBLISHED` AND `PUBLIC` events. For `PRIVATE` events, RLS checks if `auth.uid()` has an active `club_memberships` record for the event's associated clubs.
+  * `SELECT`: All users can view `PUBLISHED` AND `PUBLIC` events. For `PRIVATE` events, RLS checks if `current_setting('app.user_id')::uuid` has an active `club_memberships` record for the event's associated clubs.
   * `INSERT`: Allowed for users with `CLUB_ADMIN` or `CORE_MEMBER` roles (creates in `DRAFT` state).
   * `UPDATE`: 
     * `DRAFT`/`PENDING_APPROVAL` states: Updatable by `CLUB_ADMIN`.
@@ -108,5 +120,5 @@ The complex authorization matrix is strictly enforced at the database layer (ADR
   * `INSERT`: Users can insert their own row ONLY IF `method = 'QR'` and the event state is `PUBLISHED`.
   * `UPDATE`/`DELETE`: Denied for all roles except `PLATFORM_ADMIN` (Faculty cannot modify attendance).
   * `SELECT`: Students can view their own. `CLUB_ADMIN` and `FACULTY` can view all records for events tied to their clubs.
-* **Leaderboard Scores**: `INSERT` restricted to secure Supabase Edge Functions (triggered asynchronously by attendance validations). Read-only for all client applications.
+* **Leaderboard Scores**: `INSERT` restricted to the Express backend (called by the `mark_attendance` RPC handler after attendance validation). Read-only for all client applications.
 * **Audit Logs**: Completely locked down. `INSERT` happens natively via Database Triggers using `security definer`. `SELECT` is strictly restricted to `PLATFORM_ADMIN` and `FACULTY_ADMIN`.

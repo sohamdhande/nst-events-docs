@@ -1,45 +1,100 @@
 # Master Context: NST-Events
 
 ## Project Summary
-NST-Events is a production-grade campus platform for Newton School of Technology (NST), Pune. Target deployment is for 3000+ active students. The platform centralizes Event Management, Club Operations, dynamic QR-based Attendance, Announcements, and comprehensive Analytics. The initial build timeline is 2 months with a 6-developer team.
+NST-Events is a production-grade campus platform for Newton School of Technology (NST), Pune. Target deployment is for 3000+ active students. The platform centralizes Event Management, Club Operations, dynamic QR-based Attendance, Announcements, and comprehensive Analytics. Build timeline: 2 months, 6-developer team.
 
 ## Current Architecture
-* **Frontend**: React Native (Expo) - Mobile application for students and faculty.
-* **Web Dashboard**: Next.js - Administrative and operational dashboard.
-* **Backend**: Supabase - Serverless backend providing API and real-time capabilities.
-* **Database**: PostgreSQL (hosted via Supabase) - Relational data store.
-* **Authentication**: Google OAuth restricted to `@adypu.edu.in` and `@newtonschool.co` domains.
-* **Authorization**: PostgreSQL Row Level Security (RLS) ensuring strict data access.
-* **Storage**: Supabase Storage for media, assets, and document uploads.
-* **Notifications**: Expo Push Notifications integrated with `pgmq`.
+
+| Layer | Technology | Notes |
+|---|---|---|
+| **Mobile App** | Expo React Native | Student-first; all campuses |
+| **Web Dashboard** | Next.js | Admin, approval, operations |
+| **API Server** | Node.js + Express + TypeScript | `nst-api` K3s Deployment, 2–3 replicas |
+| **Queue Worker** | Node.js (same codebase) | `nst-worker` K3s Deployment, **1 replica**, separate from API |
+| **ORM** | Prisma | All DB access; generates TypeScript types |
+| **Database Engine** | PostgreSQL | Hosting TBD (see Open Questions) |
+| **Auth** | Google OAuth 2.0 via Express | Express owns the full OAuth lifecycle |
+| **Session** | 15-min JWT + 30-day DB-backed refresh token | See `docs/security/02-jwt-strategy.md` |
+| **Authorization** | Express RBAC (primary) + PostgreSQL RLS (secondary) | RLS uses `current_user_id()` per-transaction |
+| **Real-time** | SSE (Server-Sent Events) via Express | No WebSockets in V1 |
+| **Storage** | **Deferred to post-V1** | No file uploads in V1. V1 uses default/generated fallback assets. See ADR-008 |
+| **Notifications** | Expo Push via `nst-worker` + pgmq | Async delivery, 5s polling interval |
+| **TypeScript Types** | Prisma-generated | Schema-first; types auto-generated via `prisma generate` |
+| **Deployment** | NST Cluster (5-node K3s, NST Pune) | `*.nstsdc.org` via Cloudflare Tunnel |
+| **Local Dev** | Docker Compose | Express + PostgreSQL, single command |
+
+---
+
+## User Identity Model
+
+Users are identified by:
+- `id` (UUID) — internal platform primary key, generated at first login
+- `google_sub` (TEXT UNIQUE) — stable OIDC subject identifier from Google `id_token`. Used for OAuth upsert on every login. **Not a foreign key.**
+
+Domain restriction enforced at OAuth callback: only `@adypu.edu.in` (students) and `@newtonschool.co` (faculty, management).
+
+---
+
+## Authorization Architecture
+
+**Two independent layers. Both must agree for access to be granted.**
+
+1. **Express RBAC Middleware (Primary)**: Verifies JWT, resolves effective role from `club_memberships` live, rejects with `403 Forbidden` before any query runs.
+2. **PostgreSQL RLS (Secondary / Defense-in-Depth)**: Enforces row visibility and write guards at the database level using `current_user_id()` — a helper that reads `current_setting('app.user_id', true)::uuid` set per-transaction by the `withUserContext` Prisma wrapper.
+
+RLS is a guardrail, not a full authorization system. Express makes the primary permission decision.
+
+---
+
+## Session Strategy
+
+- **Access JWT**: 15-minute TTL, contains only `user_id`, HS256-signed
+- **Refresh Token**: 30-day opaque token, SHA-256 hashed, stored in `refresh_tokens` table
+- **Rotation**: Refresh token is rotated (revoked + new issued) on every use
+- **Revocation**: Platform Admin can delete all `refresh_tokens` rows for a user to force logout
+- **Cookie**: Refresh token delivered as HttpOnly, Secure, SameSite=Strict cookie
+- **Full spec**: `docs/security/02-jwt-strategy.md`
+
+---
 
 ## User Roles
-* **Student**: Base role; can view events, register, and mark attendance.
-* **Member**: Associated with specific clubs.
-* **Core Member**: Elevated club privileges.
-* **Club Admin**: Full management over a specific club's events and roster.
-* **Faculty Mentor**: Faculty oversight for clubs.
-* **Faculty Admin**: Administrative capabilities over academic/faculty-led events.
-* **Platform Admin**: Superuser with complete system access.
+- **Student**: Base role; can view events, register, and mark attendance.
+- **Member**: Associated with specific clubs.
+- **Core Member**: Elevated club privileges.
+- **Club Admin**: Full management over a specific club's events and roster.
+- **Faculty Mentor**: Faculty oversight for clubs.
+- **Faculty Admin**: Administrative capabilities over academic/faculty-led events.
+- **Platform Admin**: Superuser with complete system access.
+
+---
 
 ## Finalized Architecture Domains (FROZEN V1)
-The following core architectural domains have been completely documented, strictly reviewed, and frozen for the V1 release:
-1. **Database Architecture** (`docs/database/`): 21+ documents covering ER diagrams, indexes, queues, JSONB rules, PostGIS geofencing, soft-delete views, and registration `SELECT FOR UPDATE` locks.
-2. **API & Security Architecture** (`docs/api/`, `docs/security/`): Strict "Zero Trust" model, PGMQ integration, edge functions, live role resolution without JWT claim storage, and comprehensive Table Policy Matrices.
-3. **Mobile Navigation Architecture** (`docs/mobile/`): Context-aware Home feed driven by `get_home_feed()` delta-sync, 5-tier Priority System, Pessimistic Registration, Waitlist states, and exact Domain Governance (Profile vs Campus).
-4. **Events & Attendance Models**: Defined generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, and HMAC validations.
-5. **Dashboard Navigation Architecture** (`docs/dashboard/`): Single dashboard shell, Command Palette rules, Operations mode, strict routing and governance.
-6. **Design System Architecture** (`docs/design-system/`): Token-driven architecture (Tailwind/NativeWind), Geist typography, swipe-to-checkin, accessibility fallbacks, and multi-campus semantic theming.
-7. **Merit-Based Leaderboard System** (`docs/features/leaderboard/`): Derived point models, abuse prevention, and strictly audited role assignments.
-8. **Component Inventory Architecture** (`docs/ui/`): Frozen catalog of 75+ React Native and Next.js components, establishing the official frontend blueprint.
-9. **Product Surface Architecture**: Finalized screen workflows, including attendance disputes, leadership handovers, multi-club mapping, and strict pessimistic UI validation.
-10. **Diagram Suite** (`docs/diagrams/`): 22 complete system diagrams covering high-level architecture, user flows, database ERD, security models, and end-to-end request lifecycles.
 
-## Open Questions
-* Integration strategy for legacy campus systems (if applicable).
-* Offline capabilities and synchronization for the mobile app during poor connectivity (Deferred to post-V1).
+1. **Database Architecture** (`docs/database/`): 20+ documents covering ER diagrams, indexes, queues, JSONB rules, PostGIS geofencing, soft-delete views, and registration `SELECT FOR UPDATE` locks.
+2. **API & Security Architecture** (`docs/api/`, `docs/security/`): Express RBAC + RLS dual-layer model, pgmq integration, Express route handlers, live role resolution, Table Policy Matrices, JWT & session strategy.
+3. **Mobile Navigation** (`docs/mobile/`): `get_home_feed()` delta-sync, Pessimistic Registration, Waitlist states, Domain Governance.
+4. **Events & Attendance Models**: Generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, HMAC validation.
+5. **Dashboard Navigation** (`docs/dashboard/`): Single shell, Command Palette, Operations mode, strict routing.
+6. **Design System** (`docs/design-system/`): Token-driven, Geist typography, NativeWind, accessibility.
+7. **Leaderboard** (`docs/features/leaderboard/`): Materialized views, abuse prevention, audited role assignments.
+8. **Component Inventory** (`docs/ui/`): 75+ React Native and Next.js components.
+9. **Product Surface**: Dispute flows, leadership handovers, multi-club events.
+10. **Diagram Suite** (`docs/diagrams/`): 22 Mermaid diagrams.
+
+---
+
+## Open Questions — Requires Human Decision Before Implementation
+
+| Decision | Status | Blocking |
+|---|---|---|
+| **Database Hosting** | Under Review | No — any option works with Prisma |
+| **File Storage Provider** | **Deferred** | No — file uploads are not in V1. V1 uses default/generated fallback assets. Storage provider will be selected when file uploads are prioritized in V1.1/V2. |
+
+---
 
 ## Active Phase
-* **Architecture Phase**: Completed. The documentation repository acts as the complete, implementation-grade blueprint.
-* **Implementation Phase**: Ready to commence `.sql` migrations, Edge Function development, and React Native UI prototyping based on the frozen documents.
+- **Architecture Phase**: Complete. This repository is the implementation-grade blueprint.
+- **Implementation Phase**: Ready to start. Priority: Prisma schema → Express scaffolding → RBAC middleware → PostgreSQL migrations (RLS + RPCs) → Mobile UI.
+
+---
 

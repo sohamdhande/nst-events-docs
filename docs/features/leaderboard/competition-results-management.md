@@ -20,7 +20,7 @@ Provides a secure UI surface for recording and verifying merit-based competition
 Faculty Mentors can access the "Competition Results Review" screen to audit the assigned winners and contest fraudulent entries.
 
 ## Leaderboard Impact & Recalculation
-Submitting results triggers the `submit_competition_result` RPC, which instantly updates the materialized leaderboard views.
+Submitting results triggers the `submit_competition_result` RPC. Points are reflected in the materialized leaderboard views on the next scheduled `pg_cron` refresh cycle (every 5 minutes). Platform Admin may also trigger a manual refresh via `POST /admin/leaderboard/recalculate`.
 
 ## Audit Requirements
 Every assigned result creates a `SUBMIT_COMPETITION_RESULT` audit log. Students are completely barred from this UI.
