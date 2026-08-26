@@ -26,7 +26,7 @@ Manages attendee state and capacity limits.
 ## `registration_type`
 Declares whether an event accepts individual or team-based registration.
 * `INDIVIDUAL` — Each user registers independently.
-* `TEAM` — Users register as part of a team (use with `teams` table).
+* `TEAM` — Participants must register through a team workflow. Individual event registration is not permitted.
 
 ## `attendance_status`
 The formal record of a user's presence for a session.
@@ -96,5 +96,35 @@ Manages the club leadership transfer lifecycle.
 
 ## `attendance_type_enum`
 Defines whether an event requires one check-in or multiple.
-* `SINGLE`
-* `MULTI_SESSION`
+* `SINGLE` — An event configured as SINGLE permits exactly one attendance session.
+* `MULTI_SESSION` — An event configured as MULTI_SESSION permits multiple attendance sessions.
+
+## `assignment_source`
+Tracks how a UserAcademicProfile was assigned.
+* `EMAIL_INFERENCE` — Resolved automatically via email parsing (e.g. e25b... @ adypu.edu.in).
+* `ADMIN` — Assigned or overridden manually by Platform/Faculty Admin. Authoritative.
+
+## `event_audience`
+Defines the targeted student population for an event.
+* `ALL_STUDENTS` — Event is open to all students.
+* `SPECIFIC_BATCHES` — Event is restricted to explicitly targeted `AcademicBatch` cohorts.
+
+## `team_status`
+Tracks the lifecycle of a team participation.
+* `FORMING` — Team exists, leader exists, members may join. Not consuming confirmed capacity.
+* `REGISTERED` — Minimum size reached and sufficient capacity existed. Consumes confirmed capacity.
+* `WAITLISTED` — Team is complete but event capacity was insufficient. Promoted FIFO.
+* `CANCELLED` — Cancelled administratively or failed to restore minimum size after 24h grace period. Releases capacity.
+
+## `invitation_status`
+Manages the team invitation lifecycle.
+* `PENDING` — Invitation sent but not yet accepted or declined.
+* `ACCEPTED` — User successfully joined the team.
+* `DECLINED` — User explicitly rejected the invitation.
+* `CANCELLED` — Leader revoked the invitation.
+* `EXPIRED` — Invitation time limit exceeded or event locked.
+
+## `member_role`
+Differentiates leadership within a team.
+* `LEADER` — The creator or transferred owner of the team. Has administrative rights over the team.
+* `MEMBER` — A standard accepted member of the team.

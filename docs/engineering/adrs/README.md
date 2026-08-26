@@ -23,8 +23,8 @@ All architectural contradictions identified during the technical audit have been
 8. **Global Role Model**: `users.global_role` is the single source of truth. Phantom `user_roles` table removed.
 9. **JWT Authorization Timing**: Club role revocations are immediate (live DB resolution). JWT TTL governs authentication session only.
 
-### File Uploads — Deferred to Post-V1
-NST-Events V1 will not support file uploads. All avatar, banner, logo, certificate, and media upload features are deferred to a later release (V1.1 / V2). V1 uses default or generated fallback assets only. **No open decisions block V1 backend implementation.**
+### File Uploads — Deferred to Post-V1 (Mostly)
+NST-Events V1 will generally not support file uploads. All avatar, logo, certificate, and media upload features are deferred to a later release (V1.1 / V2). V1 uses default or generated fallback assets. **However, Club Branding Banners are the approved pilot** and will be implemented in V1. **No open decisions block V1 backend implementation.**
 
 * **ADR-008**: File Storage Provider — Deferred
 * **ADR-024**: Media Storage Architecture — Deferred (depends on ADR-008)

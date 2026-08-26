@@ -25,21 +25,23 @@
 
 ## 6. Layout Hierarchy
 ```text
-SidebarNavigation (bg: #111827)
-├── ContextSwitcher
-├── div (bg: #F9FAFB, padding: space-6)
-│   ├── BreadcrumbTrail
-│   ├── h1 (text: "Dashboard", color: #111827, typography: text-2xl, font-weight: 600)
-│   └── div (layout: grid)
-│       ├── Card (bg: #FFFFFF, border: rounded-lg)
-│       │   ├── h2 (text: "Upcoming Events")
-│       │   └── [Widget Content]
-│       ├── Card (bg: #FFFFFF, border: rounded-lg)
-│       │   ├── h2 (text: "Pending Approvals")
-│       │   └── [Widget Content]
-│       └── Card (bg: #FFFFFF, border: rounded-lg)
-│           ├── h2 (text: "My Clubs Summary")
-│           └── [Widget Content]
+AppShell
+├── SidebarNavigation (bg: #111827)
+│   └── ContextSwitcher
+├── TopBar
+└── MainContent (bg: #F9FAFB, padding: space-6)
+    ├── BreadcrumbTrail
+    ├── h1 (text: "Dashboard", color: #111827, typography: text-2xl, font-weight: 600)
+    └── div (layout: grid)
+        ├── Card (bg: #FFFFFF, border: rounded-lg)
+        │   ├── h2 (text: "Upcoming Events")
+        │   └── [Widget Content]
+        ├── Card (bg: #FFFFFF, border: rounded-lg)
+        │   ├── h2 (text: "Pending Approvals")
+        │   └── [Widget Content]
+        └── Card (bg: #FFFFFF, border: rounded-lg)
+            ├── h2 (text: "My Clubs Summary")
+            └── [Widget Content]
 ```
 
 ## 7. Component Map

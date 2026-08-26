@@ -7,7 +7,8 @@ Built exclusively using Next.js and Tailwind CSS.
 
 ## Navigation & Structure
 * **SidebarNavigation**: Dynamic, role-based context tree.
-* **ContextSwitcher**: Dropdown mapping to `active_campus_id` or club context.
+* **TopBar**: Top shell boundary housing notifications and mobile branding.
+* **ContextSwitcher**: Dropdown mapping to `active_campus_id` or club context (Presentation-only V1).
 * **CommandPalette**: Cmd+K overlay for global macros.
 * **BreadcrumbTrail**: Reflects flat routing paths.
 * **PageHeader**: Title, contextual actions, and active filters.

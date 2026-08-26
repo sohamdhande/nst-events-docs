@@ -13,7 +13,7 @@ Simulated security audits and architecture validations.
 * **Notification Abuse**: Broadcast limits correctly blocked spamming above 2/week. **PASS**.
 * **Compromised Club Admin**: Audit logs fully tracked all destructive actions performed by the compromised account. **PASS**.
 
-> **Storage Enumeration**: Not applicable for V1 — file uploads are deferred to post-V1 (ADR-008). Will be added to the test suite when file upload features are implemented.
+> **Storage Enumeration**: Not applicable generally for V1 — general file uploads are deferred to post-V1 (ADR-008). Will be added to the test suite when the Club Branding pilot and other file upload features are implemented.
 
 Overall architecture is sound and secure under stress.
 

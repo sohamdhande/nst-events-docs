@@ -39,23 +39,34 @@ erDiagram
 * `competition_result`: `WINNER`, `RUNNER_UP`, `SECOND_RUNNER_UP`, `TOP_10`, `PARTICIPANT`
 * `dispute_status`: `PENDING`, `APPROVED`, `REJECTED`
 * `handover_status`: `PENDING`, `APPROVED`, `REJECTED`
+* `assignment_source`: `EMAIL_INFERENCE`, `ADMIN`
+* `event_audience`: `ALL_STUDENTS`, `SPECIFIC_BATCHES`
 
 ## 3. Tables & Relationships
 
+### Academic Identity
+* **`academic_programs`**: Canonical degree programs.
+* **`academic_batches`**: Specific cohorts belonging to a program.
+  * Columns: `id`, `program_id` (FK), `admission_year`, `graduation_year`.
+* **`user_academic_profiles`**: Links a user to their current AcademicBatch.
+  * Columns: `id`, `user_id` (FK), `batch_id` (FK), `assignment_source` (Enum), `assigned_by` (FK), `assigned_at`.
+* **`event_audience_batches`**: Many-to-Many mapping linking events to restricted batches.
+  * Columns: `event_id` (FK), `batch_id` (FK).
+
 ### Core Identity & Access
 * **`users`**: Base identity for authentication and profiles.
-  * Columns: `id` (PK, UUID — internal platform ID), `google_sub` (TEXT UNIQUE NOT NULL — stable OIDC subject from Google `id_token`; not a FK), `email`, `full_name`, `avatar_url` (TEXT, nullable — `NULL` in V1, file uploads deferred), `global_role` (Enum).
+  * Columns: `id` (PK, UUID — internal platform ID), `google_sub` (TEXT UNIQUE NOT NULL — stable OIDC subject from Google `id_token`; not a FK), `email`, `full_name`, `avatar_url` (TEXT, nullable — `NULL` in V1, general file uploads deferred), `global_role` (Enum).
   * On first OAuth login, Express upserts on `google_sub` to find or create the user.
 * **`refresh_tokens`**: Server-side session storage. Enables revocation without short-lived JWT blocklists.
   * Columns: `id` (PK, UUID), `user_id` (FK → users.id, CASCADE), `token_hash` (TEXT UNIQUE — SHA-256 of raw token), `expires_at`, `revoked_at`, `user_agent`, `ip_address`.
 * **`clubs`**: Organizations within NST.
-  * Columns: `id` (PK, UUID), `name`, `description`, `banner_url` (TEXT, nullable — `NULL` in V1, file uploads deferred), `status`, `created_at`.
+  * Columns: `id` (PK, UUID), `name`, `description`, `banner_url` (TEXT, nullable — currently remains nullable and is not required for Club creation. It is intended to be populated by the approved Club Branding upload workflow), `status`, `created_at`.
 * **`club_memberships`**: Resolves the many-to-many relationship, granting specific RBAC roles per club.
   * Columns: `id` (PK), `user_id` (FK), `club_id` (FK), `role` (Enum: club_role), `joined_at`.
 
 ### Event Domain
 * **`events`**: The core generic event model.
-  * Columns: `id` (PK, UUID), `title`, `description`, `start_time`, `end_time`, `location_name`, `location_geofence` (JSONB/PostGIS), `event_type` (Enum), `state` (Enum: event_state), `visibility` (Enum: event_visibility), `registration_type` (Enum), `metadata` (JSONB), `attendance_type` (Enum: attendance_type_enum, default `SINGLE`), `is_locked` (Boolean, default false), `max_capacity` (Integer, nullable — `NULL` means unlimited), `registration_count` (Integer, default 0), `created_by` (FK), `created_at`.
+  * Columns: `id` (PK, UUID), `title`, `description`, `start_time`, `end_time`, `location_name`, `location_geofence` (JSONB/PostGIS), `event_type` (Enum), `state` (Enum: event_state), `visibility` (Enum: event_visibility), `audience` (Enum: event_audience, default `ALL_STUDENTS`), `registration_type` (Enum), `metadata` (JSONB), `attendance_type` (Enum: attendance_type_enum, default `SINGLE`), `is_locked` (Boolean, default false), `max_capacity` (Integer, nullable — `NULL` means unlimited), `registration_count` (Integer, default 0), `created_by` (FK), `created_at`.
 * **`event_clubs`**: Many-to-Many mapping for multi-club collaborative events.
   * Columns: `event_id` (FK), `club_id` (FK), `is_primary` (Boolean).
 * **`event_sessions`**: Granular time blocks (Handles multi-day events or multiple check-ins per event).
@@ -64,9 +75,16 @@ erDiagram
 ### Registration & Teams
 * **`teams`**: For team-based hackathons or competitions.
   * Columns: `id` (PK, UUID), `event_id` (FK), `name`, `leader_id` (FK to users), `created_at`.
+  * Team rules: `minimum_team_size` and `maximum_team_size` are configured in `events.metadata` while the event is in DRAFT state and become immutable post-publication.
+  * Capacity: A team in FORMING or WAITLISTED state consumes 0 confirmed capacity. It only consumes event capacity (equal to its active member count) when it transitions to REGISTERED.
+  * Waitlisting applies to the entire team, maintaining FIFO order based on when the team entered the WAITLISTED state.
+
+* **`team_invitations`**: Separate from active membership, tracking the lifecycle of prospective members.
+  * Columns: `id` (PK, UUID), `team_id` (FK), `invitee_id` (FK to users), `status` (Enum: PENDING, ACCEPTED, DECLINED, CANCELLED, EXPIRED), `created_at`.
 
 * **`event_registrations`**: Individual or team registrations for an event.
-  * Columns: `id` (PK, UUID), `event_id` (FK), `user_id` (FK), `team_id` (FK, Nullable), `registered_at`.
+  * Columns: `id` (PK, UUID), `event_id` (FK), `user_id` (FK), `team_id` (FK, Nullable), `registration_status` (Enum), `registered_at`.
+  * For TEAM events, individual registration is NOT permitted. Members must be associated with a valid `team_id`.
 
 ### Attendance & Gamification
 * **`attendance_records`**: Verified physical check-ins.
@@ -84,7 +102,7 @@ erDiagram
 
 ## 4. JSONB Usage
 * **`events.metadata`**: Extends the generic event model based on `event_type`.
-  * *Hackathon Example*: `{"team_size_min": 2, "team_size_max": 4, "prizes": ["MacBook", "Keyboard"]}`
+  * *Hackathon Example*: `{"team_size_min": 2, "team_size_max": 4, "prizes": ["MacBook", "Keyboard"]}` (Note: `minimum_team_size` and `maximum_team_size` are the canonical JSON keys for team configuration).
   * *Workshop Example*: `{"prerequisites": ["Python"], "speaker_name": "John Doe"}`
 * **`attendance_records.audit_metadata`**: Forensic data for fraud prevention (ADR-030).
   * Example: `{"gps_lat": 18.123, "gps_lng": 73.456, "device_os": "iOS", "mock_location_detected": false}`

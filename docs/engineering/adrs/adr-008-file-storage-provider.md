@@ -3,7 +3,7 @@
 ## Status
 Deferred
 
-> **DEFERRED**: NST-Events V1 will not support file uploads. All avatar, banner, logo, certificate, and media upload features are deferred to a later release (V1.1 / V2). V1 will use default or generated fallback assets only. File storage provider selection is **not a blocker** for starting backend implementation.
+> **DEFERRED (Mostly)**: NST-Events V1 will generally not support file uploads. All avatar, logo, certificate, and media upload features are deferred to a later release (V1.1 / V2). **HOWEVER, Club Branding Banners are the approved pilot** and will be implemented in V1. File storage provider selection is still required for the pilot, but not a blocker for other backend implementations.
 
 ---
 
@@ -19,9 +19,9 @@ Media must not be stored in PostgreSQL columns. When implemented, the Express ba
 ---
 
 ## V1 Decision
-**File uploads are not part of V1.**
+**General File uploads are not part of V1, with the exception of Club Branding Banners.**
 
-The team evaluated the following options but determined that selecting a storage provider is not required for the initial product launch. V1 will use default/generated fallback assets (e.g., initials-based avatars, placeholder banners). All database fields that would reference uploaded media (`avatar_url`, `banner_url`, etc.) remain nullable in the schema and will store `NULL` in V1.
+The team evaluated the following options. While general file uploads are deferred and will use fallback assets (e.g., initials-based avatars), the Club Banner upload will serve as the initial pilot. The final storage provider will be selected during the Club Branding implementation phase. All database fields that would reference uploaded media (`avatar_url`, etc.) remain nullable in the schema and will store `NULL` in V1 until their respective upload workflows are implemented.
 
 This decision **unblocks backend implementation immediately**. The storage provider will be selected when file upload features are prioritized in a future release.
 

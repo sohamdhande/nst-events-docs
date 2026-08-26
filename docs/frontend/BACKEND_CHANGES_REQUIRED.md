@@ -7,7 +7,7 @@ The following backend features were historically identified as gaps. This docume
 | ID | ORIGINAL REQUIREMENT | CURRENT STATUS | CURRENT API | FRONTEND IMPACT | NOTES |
 |---|---|---|---|---|---|
 | BE-CONFIRMED-001 | `GET /v1/dashboard/summary` | IMPLEMENTED | `GET /v1/dashboard/summary` | Dashboard Unblocked | Implemented in Phase 21J |
-| BE-CONFIRMED-002 | `GET /v1/home/feed` | CLOSED AS DEFERRED / NO NEW API REQUIRED | None | MOB-03 Uses Existing APIs | Home composes from existing APIs |
+| BE-CONFIRMED-002 | `GET /v1/home/feed` | CLOSED AS DEFwERRED / NO NEW API REQUIRED | None | MOB-03 Uses Existing APIs | Home composes from existing APIs |
 | BE-CONFIRMED-003 | `GET /v1/events/:id/waitlist` | CLOSED AS NOT REQUIRED FOR V1 | None | N/A | Waitlist logic is handled internally via RPC |
 | BE-CONFIRMED-004 | `GET /v1/events/:id/teams` | IMPLEMENTED | `GET /v1/events/:id/teams` | Teams Unblocked | Implemented in Phase 21J |
 | BE-CONFIRMED-005 | `GET /v1/admin/users` | IMPLEMENTED | `GET /v1/admin/users` | User Mgmt Unblocked | Implemented in Phase 21J |

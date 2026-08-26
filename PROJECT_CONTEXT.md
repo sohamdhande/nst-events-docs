@@ -17,7 +17,7 @@ NST-Events is a production-grade campus platform for Newton School of Technology
 | **Session** | 15-min JWT + 30-day DB-backed refresh token | See `docs/security/02-jwt-strategy.md` |
 | **Authorization** | Express RBAC (primary) + PostgreSQL RLS (secondary) | RLS uses `current_user_id()` per-transaction |
 | **Real-time** | SSE (Server-Sent Events) via Express | No WebSockets in V1 |
-| **Storage** | **Deferred to post-V1** | No file uploads in V1. V1 uses default/generated fallback assets. See ADR-008 |
+| **Storage** | **Deferred to post-V1 (Mostly)** | General file uploads are not in V1. However, Club Branding (Banners) is the approved pilot for the future upload architecture. See ADR-008. |
 | **Notifications** | Expo Push via `nst-worker` + pgmq | Async delivery, 5s polling interval |
 | **TypeScript Types** | Prisma-generated | Schema-first; types auto-generated via `prisma generate` |
 | **Deployment** | NST Cluster (K3s worker nodes: 8GB RAM) | 2-node CNPG Postgres + external S3 backup (OOM prevention) |
@@ -93,7 +93,7 @@ The platform uses a two-tier role model (see `docs/backend/04-enums.md` and `doc
 | Decision | Status | Blocking |
 |---|---|---|
 | **Database Hosting** | Under Review | No — any option works with Prisma |
-| **File Storage Provider** | **Deferred** | No — file uploads are not in V1. V1 uses default/generated fallback assets. Storage provider will be selected when file uploads are prioritized in V1.1/V2. |
+| **File Storage Provider** | **Deferred (Mostly)** | No general file uploads are in V1. However, Club Branding (Banners) is the approved pilot, and a storage provider will be selected for it. All other file uploads are deferred to V1.1/V2. |
 
 ---
 

@@ -24,17 +24,19 @@
 
 ## 6. Layout Hierarchy
 ```text
-SidebarNavigation (bg: #111827)
-├── div (bg: #F9FAFB, padding: space-6)
-│   ├── BreadcrumbTrail
-│   ├── div (Header)
-│   │   └── h1 (text: "Notifications")
-│   └── div (layout: stack)
-│       └── Card (Notification Item)
-│           ├── div (Unread Indicator Dot)
-│           ├── h3 (Title)
-│           ├── p (Body)
-│           └── span (createdAt Timestamp)
+AppShell
+├── SidebarNavigation (bg: #111827)
+├── TopBar
+└── MainContent (bg: #F9FAFB, padding: space-6)
+    ├── BreadcrumbTrail
+    ├── div (Header)
+    │   └── h1 (text: "Notifications")
+    └── div (layout: stack)
+        └── Card (Notification Item)
+            ├── div (Unread Indicator Dot)
+            ├── h3 (Title)
+            ├── p (Body)
+            └── span (createdAt Timestamp)
 ```
 
 ## 7. Component Map

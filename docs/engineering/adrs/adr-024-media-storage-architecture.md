@@ -3,7 +3,7 @@
 ## Status
 Deferred (Depends on ADR-008)
 
-> **DEFERRED**: This ADR defines the media storage access pattern for when file uploads are implemented. NST-Events V1 does not include file uploads. V1 uses default or generated fallback assets only. This architecture applies to a future release (V1.1 / V2) and is **not required for V1 implementation**.
+> **DEFERRED (Mostly)**: This ADR defines the media storage access pattern for when file uploads are implemented. General file uploads are deferred, BUT **Club Branding Banners** are the approved pilot scope for this architecture in V1.
 
 ---
 
@@ -13,10 +13,10 @@ User-generated media (avatars, event banners, club banners) and internal documen
 ---
 
 ## V1 Behavior
-- **No file uploads** in V1.
-- All media URL fields in the database (`avatar_url`, `banner_url`, etc.) are **nullable** and will store `NULL`.
-- The frontend will render default or generated fallback assets (e.g., initials-based avatars, placeholder banners) when these fields are `NULL`.
-- No pre-signed URL endpoints (`POST /upload/presign`, `GET /upload/signed-read`) are implemented in V1.
+- **General file uploads are deferred** in V1.
+- However, **Club Branding (Banners)** is the approved pilot use case and will be implemented in V1 following this architecture.
+- All other media URL fields in the database (`avatar_url`, etc.) are **nullable** and will store `NULL`.
+- Pre-signed URL endpoints (e.g. `POST /upload/presign`) will be implemented specifically for the Club Banner pilot.
 
 ---
 

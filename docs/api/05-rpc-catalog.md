@@ -19,11 +19,11 @@
 * **Purpose**: Registers a user for an individual event.
 * **Inputs**: `p_event_id`
 * **Outputs**: `registration_id`, `status` (`REGISTERED` or `WAITLISTED`)
-* **Permissions**: Any authenticated student.
+* **Permissions**: Any authenticated student. Event must be `PUBLISHED`. Registration is implicitly rejected if the event is permanently locked (lazy enforcement) or if `is_locked = true`.
 * **Transaction Timeline**:
   1. `BEGIN`
   2. Execute Lock-Free Atomic Increment (`UPDATE events SET registration_count = registration_count + 1 WHERE ... RETURNING`)
-  3. Validate registration constraints (already registered?, is published?)
+  3. Validate registration constraints (already registered?, is published?, MUST reject if `registration_type` is `TEAM`, MUST reject with `AUDIENCE_NOT_ELIGIBLE` if user fails `SPECIFIC_BATCHES` audience requirements).
   4. Allocate seat (if `registration_count < max_capacity`) OR waitlist
   5. Insert registration
   6. Update `registration_count` (if seat allocated)
@@ -68,41 +68,50 @@
   3. Validate:
      - state = 'PUBLISHED'
      - registration_type = 'TEAM'
-     - registration_count < max_capacity
-  4. Insert team and creator as team lead
-  5. Emit `registration_count` realtime event (per `docs/database/21-realtime-listen-notify-contract.md`)
+     - caller satisfies event audience eligibility (`AUDIENCE_NOT_ELIGIBLE` if rejected)
+  4. Insert team (state: `FORMING`) and creator as team lead and accepted member.
+  5. Note: DOES NOT consume confirmed capacity or increment `registration_count`.
   6. `COMMIT`
 
 ### `join_team(p_event_id, p_team_id)`
 * **Purpose**: Adds user to an existing team.
 * **Transaction Timeline**:
   1. `BEGIN`
-  2. Lock event (`FOR UPDATE`)
-  3. Lock team (`FOR UPDATE`)
-  4. Validate:
+  2. Lock event (`FOR UPDATE`), Lock team (`FOR UPDATE`)
+  3. Validate:
      - state = 'PUBLISHED'
      - registration_type = 'TEAM'
-     - registration_count < max_capacity
-     - active team members < events.metadata->>'team_size_max'
-     - user is not already registered
-  5. Insert registration
-  6. Emit `registration_count` realtime event (per `docs/database/21-realtime-listen-notify-contract.md`)
-  7. `COMMIT`
+     - active team members < events.metadata->>'maximum_team_size'
+     - user is not already a member of a team for this event
+     - user satisfies event audience eligibility
+  4. Insert team membership.
+  5. If team reaches `minimum_team_size` (events.metadata->>'minimum_team_size'):
+     - Check event capacity. If available, transition team to `REGISTERED` and increment `events.registration_count` by team size.
+     - If not available, transition team to `WAITLISTED` (0 capacity consumed).
+  6. `COMMIT`
 
 ### `leave_team(p_event_id, p_team_id)`
 * **Purpose**: Removes user from a team.
 * **Transaction Timeline**:
   1. `BEGIN`
-  2. Lock event (`FOR UPDATE`)
-  3. Lock team (`FOR UPDATE`)
-  4. Soft-delete user's registration
-  5. If user was leader:
-     - Find oldest active `REGISTERED` member. (`WAITLISTED` are NEVER eligible)
-     - If found: Update team `leader_id` to this member.
-     - If NOT found: Soft-delete team AND soft-delete all remaining `WAITLISTED` registrations referencing this team.
-  6. Invoke `process_waitlist` (if user was `REGISTERED`)
-  7. Emit `registration_count` realtime event (per `docs/database/21-realtime-listen-notify-contract.md`)
-  8. `COMMIT`
+  2. Lock event (`FOR UPDATE`), Lock team (`FOR UPDATE`)
+  3. Validate user is NOT the leader (leaders must transfer leadership before leaving).
+  4. Soft-delete user's membership.
+  5. If team was `REGISTERED`:
+     - Decrement `events.registration_count` by 1.
+     - If team drops below `minimum_team_size`, flag team with 24-hour grace period condition.
+  6. Invoke `process_waitlist`.
+  7. `COMMIT`
+
+### `transfer_leadership(p_event_id, p_team_id, p_new_leader_id)`
+* **Purpose**: Reassigns team leadership to another accepted member.
+* **Security**: Only callable by current leader or administrators.
+* **Transaction Timeline**:
+  1. `BEGIN`
+  2. Lock team (`FOR UPDATE`)
+  3. Verify `p_new_leader_id` is an active member.
+  4. Update `leader_id`.
+  5. `COMMIT`
 
 ### `submit_competition_result`
 * **Purpose**: Records a verified placement (e.g., WINNER) in the `event_results` table.
@@ -175,11 +184,11 @@
 ## `lock_event`
 * **Caller**: Club Admin, Faculty Mentor, Faculty Admin, Platform Admin
 * **Input**: `event_id`
-* **Behavior**: Sets `events.is_locked = true`. Halts all new attendance scans and registrations for the event. Only affects active sessions — does not delete existing records.
-* **Security**: Caller must have appropriate role permissions for the event.
+* **Behavior**: Sets `events.is_locked = true`. Halts all new attendance scans and registrations for the event. Only affects active sessions — does not delete existing records. Cannot be executed after the 24-hour lock grace period (lazy enforcement treats event as permanently locked).
+* **Security**: Caller must have appropriate role permissions for the event. Evaluates authoritative server time.
 
 ## `unlock_event`
 * **Caller**: Club Admin, Faculty Mentor, Faculty Admin, Platform Admin
 * **Input**: `event_id`
-* **Behavior**: Sets `events.is_locked = false`. Resumes normal event operations.
-* **Security**: Caller must have appropriate role permissions for the event.
+* **Behavior**: Sets `events.is_locked = false`. Resumes normal event operations. Cannot be executed after the 24-hour lock grace period.
+* **Security**: Caller must have appropriate role permissions for the event. Evaluates authoritative server time against the deadline.

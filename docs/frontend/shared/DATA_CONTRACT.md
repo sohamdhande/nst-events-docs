@@ -89,12 +89,11 @@ Source: `apps/api/src/modules/attendance/attendance.service.ts:194`
 ### `GET /v1/events/:id/my-registration` — manually transformed, minimal
 | Field | Type |
 |---|---|
-| `status` | enum: `REGISTERED`, `WAITLISTED`, `CANCELLED` |
+| `status` | enum: `REGISTERED`, `WAITLISTED`, `CANCELLED`, `NOT_REGISTERED` |
 
 Source: `apps/api/src/modules/registrations/registrations.service.ts:94-97`
 
-> Note: "not registered" is derived client-side from a `404` response on this
-> endpoint — it is not a status enum value.
+> Note: If the user is not registered, the endpoint returns `{ status: "NOT_REGISTERED" }` with a 200 OK status. It does NOT return a 404.
 >
 > This endpoint does **not** return `team_id`. If team association is needed for the
 > current user's registration, it is not available from this endpoint — flag as a
@@ -157,6 +156,17 @@ Source: `apps/api/src/modules/clubs/clubs.service.ts:107-123`
 > **Critical for implementers**: do not reuse a single `Club` TS type across both
 > endpoints. Define `ClubListItem` and `ClubDetail` as distinct types.
 
+### `PATCH /v1/clubs/:id` (update) — same shape as detail (GET /clubs/:id)
+**Request:**
+```json
+{
+  "name": "string?",
+  "description": "string | null?",
+  "banner_url": "string | null?"
+}
+```
+**Response:** Same shape as `GET /v1/clubs/:id`
+
 ---
 
 ## User
@@ -180,6 +190,7 @@ Source: `apps/api/src/modules/users/users.service.ts:30-41`
 | `id`, `email` | string |
 | `fullName` | string \| null |
 | `globalRole` | enum |
+| `pagination.next_cursor` | string \| null |
 
 Source: `apps/api/src/modules/admin/users.service.ts:39-44`
 

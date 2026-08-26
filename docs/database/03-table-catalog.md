@@ -6,7 +6,7 @@
 * **Key Columns**: `google_sub TEXT UNIQUE NOT NULL` — the stable OIDC subject identifier from Google (`sub` field in the `id_token`). Not a foreign key. Used to match returning users on each OAuth login.
 * **Indexes**: `email` (UNIQUE B-Tree), `google_sub` (UNIQUE B-Tree)
 * **RLS Notes**: Readable by self. Public profile fields (`full_name`, `avatar_url`) readable by all authenticated users.
-* **Media Fields**: `avatar_url` (`TEXT`, nullable). Stores `NULL` in V1 — file uploads are deferred. Frontend renders a generated fallback (e.g., initials-based avatar) when `NULL`.
+* **Media Fields**: `avatar_url` (`TEXT`, nullable). Stores `NULL` in V1 — general file uploads are deferred. Frontend renders a generated fallback (e.g., initials-based avatar) when `NULL`.
 
 ## `clubs`
 * **Purpose**: Represents campus organizations.
@@ -14,7 +14,7 @@
 * **Foreign Keys**: None
 * **Indexes**: `name` (UNIQUE B-Tree), `to_tsvector` (GIN)
 * **RLS Notes**: Readable by all. Updatable by Platform Admin.
-* **Media Fields**: `banner_url` (`TEXT`, nullable). Stores `NULL` in V1 — file uploads are deferred. Frontend renders a placeholder banner when `NULL`.
+* **Media Fields**: `banner_url` (`TEXT`, nullable). Currently remains nullable and is not required for Club creation. It is intended to be populated by the approved Club Branding upload workflow (PLANNED). Frontend renders a placeholder banner when `NULL`.
 * **`status` field**: Typed as `club_status_enum` (values: `ACTIVE`, `INACTIVE`, `DISSOLVED`). Default: `ACTIVE`. Only Platform Admin may transition status. A `DISSOLVED` club cannot be reactivated.
 
 ## `club_memberships`

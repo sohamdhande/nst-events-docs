@@ -19,7 +19,7 @@ FROZEN
 * Full Text Search ranking is basic compared to Elasticsearch.
 
 ## Future Improvements (Not In Scope For V1)
-* **File uploads deferred**: No file storage provider required for V1. All media URL fields (`avatar_url`, `banner_url`) are nullable and store `NULL`. V1 uses default/generated fallback assets. Storage provider will be selected in V1.1/V2.
+* **File uploads (Mostly Deferred)**: No general file storage provider is required for V1, meaning fields like `avatar_url` remain nullable and store `NULL`. However, Club Branding (`banner_url`) is the approved pilot for the future upload architecture and is intended to be populated.
 * Advanced analytics postponed (Using basic aggregate queries).
 * No cryptographic device signing (Relying on basic heuristics + Geofencing + Dynamic QR).
 * Database partitioning for `attendance_records` postponed until year 2.

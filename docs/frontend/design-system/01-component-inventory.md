@@ -7,7 +7,8 @@ This is the master inventory of all UI components across the NST-Events platform
 
 ## Navigation
 * **SidebarNavigation**: Dashboard. Core context tree.
-* **ContextSwitcher**: Dashboard. Role/Club dropdown.
+* **TopBar**: Dashboard. Top shell boundary housing notifications and mobile branding.
+* **ContextSwitcher**: Dashboard. Role/Club dropdown (Presentation-only V1).
 * **CommandPalette**: Dashboard. Global search/action overlay.
 * **BottomNavigationItem**: Mobile. Tab bar item.
 * **ActionSheetMenu**: Mobile. Bottom drawer menu.

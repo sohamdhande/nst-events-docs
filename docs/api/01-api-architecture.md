@@ -42,5 +42,5 @@ Tasks that require external integrations or compute (QR token generation, webhoo
 Heavy asynchronous tasks (like polling `native queue` for notifications and calling the Expo Push API) are delegated to a separate Kubernetes Deployment (`nst-worker`) to avoid blocking the main API HTTP request loop.
 
 ### 4. Storage Access (TBD)
-<!-- NEEDS REVIEW: Storage strategy TBD for V1. Options include Cloudflare R2, AWS S3, MinIO on NST Cluster, or deferring file uploads to V2. -->
-File uploads will be pre-authorized by the Express backend — clients will receive signed upload URLs and never access storage with raw credentials.
+<!-- NEEDS REVIEW: General Storage strategy TBD for V1. Options include Cloudflare R2, AWS S3, MinIO on NST Cluster. -->
+File uploads will be pre-authorized by the Express backend — clients will receive signed upload URLs and never access storage with raw credentials. (NOTE: General file uploads are deferred. V1 Club Branding uses an externally hosted image URL).

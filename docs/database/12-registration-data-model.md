@@ -39,7 +39,8 @@ The `events` table contains `max_capacity` (nullable INTEGER; `NULL` means unlim
    ```
 2. If a row is returned (capacity available or unlimited): inserts an `event_registrations` row with `registration_status = 'REGISTERED'`.
 3. If 0 rows returned (event full): inserts with `registration_status = 'WAITLISTED'` (does NOT increment `registration_count`).
-4. The entire operation is atomic within a single transaction.
+4. For TEAM events: When the event capacity has been reached, creation of a new team is rejected. V1 does not create waitlisted teams.
+5. The entire operation is atomic within a single transaction.
 
 ### Lock-Free Atomic Increment Strategy
 The atomic `UPDATE ... WHERE ... RETURNING` pattern ensures that concurrent requests from 500+ students at exactly the same millisecond do not oversell a limited-capacity event. This avoids `SELECT FOR UPDATE` lock contention while serializing capacity checks safely under high load.

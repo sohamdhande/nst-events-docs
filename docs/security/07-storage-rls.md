@@ -1,9 +1,9 @@
 # Storage RLS
 
-> **NOT IN V1**: File uploads are deferred to a later release (V1.1 / V2). NST-Events V1 does not require a storage provider and uses default/generated fallback assets only. This document is preserved as **future design guidance** for when file uploads are implemented.
+> **NOT IN V1 (Mostly)**: General file uploads are deferred to a later release (V1.1 / V2). NST-Events V1 does not generally require a storage provider and uses default/generated fallback assets. **However**, Club Branding (Banners) is the approved pilot for the future upload architecture. This document is preserved as **future design guidance** for when file uploads are fully implemented, and is applicable to the Club Branding pilot.
 
 ## Status
-**Deferred — Not implementable until file uploads are prioritized and a storage provider is selected (ADR-008).**
+**Deferred (Mostly) — Not implementable for general files until fully prioritized and a storage provider is selected (ADR-008), though Club Branding Banners will serve as the pilot.**
 
 ## Future Access Control Model
 In the Express-based architecture, file access control is **not** implemented via PostgreSQL RLS on a `storage.objects` table (that was Supabase-specific). Instead, all storage authorization flows through the Express backend:

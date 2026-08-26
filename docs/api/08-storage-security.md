@@ -1,10 +1,14 @@
 # Storage Security
 
-> **NOT IN V1**: File uploads are deferred to a later release (V1.1 / V2). NST-Events V1 does not implement file upload endpoints (`POST /upload/presign`, `GET /upload/signed-read`), does not require a storage provider, and uses default/generated fallback assets. All media URL fields in the database are nullable and store `NULL` in V1. The security model below is preserved as **future design guidance** for when file uploads are implemented.
+> **NOT IN V1:** General file uploads are deferred to a later release (V1.1 / V2). NST-Events V1 does not require a storage provider and uses default/generated fallback assets.
+> **NOTE:** V1 Club Branding uses an externally hosted image URL, not a file upload.
 
-## Intended Bucket Structure (Provider TBD)
-1. **`avatars`**: Public user profile pictures.
-2. **`club_banners`**: Public club branding.
+## Scope of Media Objects (Post-V1)
+
+Once file uploads are implemented, the platform will handle two primary classes of objects:
+
+1. **`user_avatars`**: Publicly readable (Post-V1).
+2. **`club_banners`**: Public club branding (V1 uses external URLs).
 3. **`event_media`**: Public event posters and attachments.
 4. **`secure_documents`**: Private forms, budget proposals, faculty sign-offs.
 
@@ -23,8 +27,12 @@ All file upload authorization is handled by the **Express backend**. Clients do 
 ## Folder Isolation (Intended)
 Folders inside buckets mirror database UUIDs. A user can only upload an avatar into `avatars/<user_id>/`. This is enforced by Express generating the correct path during pre-signing.
 
-## Media Ownership
+## Media Ownership & Lifecycle
 All media references in the database (e.g., `avatar_url`, `banner_url`) must point to objects the user is authorized to own. Orphaned objects must be cleaned up by a background maintenance task.
+
+### Temporary Assets & Replacement Semantics
+Uploads that have not yet been attached to a database record (e.g. user uploaded a Club Banner but cancelled creation) enter a temporary/unattached state and must be cleaned up automatically.
+When replacing an existing banner, the old banner remains active until the Club reference is successfully updated to the new asset. After a successful detachment, the old asset enters the cleanup lifecycle.
 
 ## URL Validation on DB Updates — Critical Security Requirement
 

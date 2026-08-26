@@ -19,5 +19,5 @@
 | Clubs List | Web | `/v1/clubs` | GET | `/v1/clubs` | Fetch Clubs | `id, name, description, banner_url, status, event_count, member_count` | `['clubs', 'list']` | No | 401, 500 | PLANNED |
 | Clubs Search | Web | `/v1/clubs/search` | GET | `/v1/clubs/search` | Search Clubs | `id, name, description, banner_url, status, event_count, member_count` | `['clubs', 'search']` | No | 401, 500 | PLANNED |
 | Admin Audit Logs | Web | `/v1/admin/audit-logs` | GET | `/v1/admin/audit-logs` | View Platform Logs | `id, action, entity_type, entity_id, actor_id, created_at` | `['admin', 'audit-logs']` | No | 401, 403, 500 | PLANNED |
-| Admin Users | Web | `/v1/admin/users` | GET | `/v1/admin/users` | View Users List | `id, email, display_name, global_role` | `['admin', 'users']` | No | 401, 403, 500 | PLANNED |
+| Admin Users | Web | `/v1/admin/users` | GET | `/v1/admin/users?q=&cursor=&limit=` | View Users List | `data (id, email, fullName, globalRole), pagination.next_cursor` | `['admin', 'users']` | No | 401, 403, 500 | PLANNED |
 | Admin Role Update | Web | `/v1/admin/users/:userId/role` | POST | `/v1/admin/users/:userId/role` | Escalate Privileges| `global_role` | N/A | Yes | 401, 403, 500 | PLANNED |

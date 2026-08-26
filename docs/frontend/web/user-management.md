@@ -37,6 +37,8 @@ SidebarNavigation (bg: #111827)
 │           ├── td (email)
 │           ├── td (globalRole badge)
 │           └── td (Button: Change Role)
+│   └── div (Pagination)
+│       └── button (Load More)
 ```
 
 ## 7. Component Map
@@ -71,8 +73,21 @@ SidebarNavigation (bg: #111827)
 - **Error State**: Show global alert banner if the user fetch fails.
 
 ## 11. Interaction Specification
+### Role Mutation
 - **Trigger**: Click "Change Role"
 - **Action**: Opens a modal to select a new `global_role`. Submit fires `POST` mutation to update role.
+
+### Pagination
+1. **Initial page fetch**: Retrieves the first page of users with a defined `limit`.
+2. **`next_cursor` detection**: If the response contains `pagination.next_cursor != null`, the "Load More" control becomes visible.
+3. **Load More visibility**: Only rendered when a valid `next_cursor` is present.
+4. **Load More click behavior**: Triggers a fetch for the next page of users.
+5. **Next-cursor request**: The API call explicitly uses `cursor=<next_cursor>`.
+6. **Append behavior**: Successful responses append the newly fetched users to the existing list.
+7. **Duplicate prevention**: Existing users are not duplicated in the list.
+8. **Loading/disabled behavior**: The "Load More" button is disabled and displays a loading state while the request is pending.
+9. **Terminal condition**: When the new fetch returns `pagination.next_cursor == null`, the "Load More" control disappears.
+10. **Next-page error behavior**: If the fetch fails, existing users remain visible, and the global error state safely reports the failure without erasing the table.
 
 ## 12. Form Specification
 - **Role Change Modal** (Inferred UX requirement for the role change action):

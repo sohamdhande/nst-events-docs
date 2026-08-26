@@ -75,7 +75,7 @@ Prisma manages table structures, enums, relations, and basic indexes. Everything
 |---|---|
 | **Purpose** | Represents campus organizations |
 | **Primary Key** | `id UUID DEFAULT gen_random_uuid()` |
-| **Key Columns** | `name TEXT UNIQUE NOT NULL`, `description TEXT`, `banner_url TEXT NULL` (NULL in V1), `status club_status_enum NOT NULL DEFAULT 'ACTIVE'` |
+| **Key Columns** | `name TEXT UNIQUE NOT NULL`, `description TEXT`, `banner_url TEXT NULL` (currently nullable, intended to be populated by Club Branding upload workflow), `status club_status_enum NOT NULL DEFAULT 'ACTIVE'` |
 | **Timestamps** | `created_at`, `updated_at` |
 | **Soft Delete** | `deleted_at TIMESTAMPTZ NULL` |
 | **Indexes** | `name` UNIQUE B-Tree, `search_vector` GIN (SQL) |

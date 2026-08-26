@@ -24,7 +24,7 @@ Note: RLS policies use `current_user_id()` — a PostgreSQL helper function defi
 | `leadership_handover_requests`| Participants + Faculty + Platform Admin | Initiated_by | Faculty Mentor, Platform Admin | None | |
 | `notification_jobs` | None (Client/Express) | All Auth Users (via RPC/Express) | None (Client/Express) | None (Client/Express) | **Service-Only Table.** Clients can `INSERT` (enqueue) jobs. Only the `nst-worker` service role can `SELECT`, `UPDATE`, or `DELETE`. SECURITY DEFINER RPCs bypass RLS to enqueue jobs. |
 
-> **Storage objects**: Not applicable for V1 — file uploads are deferred to post-V1 (ADR-008). No storage object policies are required.
+> **Storage objects**: General file uploads are deferred to post-V1 (ADR-008), though Club Branding (Banners) is an approved pilot. No storage object policies are required in the DB layer for V1 since Express handles storage authorization.
 
 ## `event_results`
 * **SELECT**: Public (all authenticated users can view winners).
