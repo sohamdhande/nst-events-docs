@@ -33,3 +33,4 @@ Only use endpoints listed in `docs/api/02-api-routing-matrix.md`. Do NOT invent 
 
 ## M. Security Rules
 Frontend authorization is UX-only. The backend is the security authority.
+Primary CLUB_ADMIN cannot participate in their own club's event.

@@ -28,6 +28,7 @@ All operations are handled by the **Express backend**. Clients never call the da
 * **Feed Visibility (`GET /v1/events`)**: Audience filtering MUST occur server-side. The frontend/mobile client is NOT the security boundary. For `PUBLIC` + `SPECIFIC_BATCHES` events, they are visible only to users in those batches. Unassigned users only see `ALL_STUDENTS` events.
 * **Direct Access (`GET /v1/events/:id`)**: An unauthorized student trying to access an audience-restricted event directly will receive a `404 Not Found` (hidden semantics).
 * **Registration & Teams**: `AUDIENCE_NOT_ELIGIBLE` error is returned when an ineligible user tries to register or join a team for a targeted event.
+* **Team Registration Constraints**: `DELETE /v1/events/:id/register` is explicitly invalid for TEAM events and returns a `400 Bad Request`. Team cancellation must be handled via `POST /v1/teams/:id/cancel` by the team leader.
 * **Admin Bypass**: Platform Admin, Faculty Admin, and authorized club operators bypass student audience restrictions.
 
 ## Current API (Phase 21J)
@@ -42,12 +43,13 @@ All operations are handled by the **Express backend**. Clients never call the da
 | POST | `/v1/admin` | `adminQueueRouter` | `/queue/dead-letters/:id/replay` | `/v1/admin/queue/dead-letters/:id/replay` | Required | `PLATFORM_ADMIN` | `adminService` | 200 |
 | POST | `/v1/admin/users` | `adminUsersRouter` | `/:userId/revoke-sessions` | `/v1/admin/users/:userId/revoke-sessions` | Required | `PLATFORM_ADMIN` | Direct Prisma | 200 |
 | GET | `/v1` | `academicBatchesRouter` | `/academic-batches` | `/v1/academic-batches` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN, CLUB_ADMIN, CORE_MEMBER` | `academicBatchesService.getAcademicBatches` | 200 |
+| GET | `/v1` | `academicProgramsRouter` | `/academic-programs` | `/v1/academic-programs` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN, Active Club Organizer (CLUB_ADMIN/CORE_MEMBER)` | `academicProgramsService.getAcademicPrograms` | 200 |
 | POST | `/v1` | `attendanceRouter` | `/attendance/generate-qr` | `/v1/attendance/generate-qr` | Required | `CLUB_ADMIN, CORE_MEMBER` | `attendanceService.generateQr` | 200 |
 | POST | `/v1` | `attendanceRouter` | `/attendance/mark` | `/v1/attendance/mark` | Required | None | `attendanceService.markAttendance` | 200/201 |
 | POST | `/v1` | `attendanceRouter` | `/attendance/sync-offline` | `/v1/attendance/sync-offline` | Required | None | `attendanceService.syncOffline` | 200 |
 | GET | `/v1` | `attendanceRouter` | `/events/:id/attendance` | `/v1/events/:id/attendance` | Required | `CLUB_ADMIN, CORE_MEMBER, FACULTY_MENTOR` | `attendanceService.getEventAttendance` | 200 |
 | GET | `/v1` | `attendanceRouter` | `/users/me/attendance` | `/v1/users/me/attendance` | Required | None | `attendanceService.getMyAttendance` | 200 |
-| POST | `/v1` | `attendanceRouter` | `/events/:id/attendance/manual` | `/v1/events/:id/attendance/manual` | Required | `PLATFORM_ADMIN` | `attendanceService.manualMarkAttendance` | 200/201 |
+| POST | `/v1` | `attendanceRouter` | `/events/:id/attendance/manual` | `/v1/events/:id/attendance/manual` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN, CLUB_ADMIN (primary club)` | `attendanceService.manualMarkAttendance` | 200/201 |
 | POST | `/v1` | `attendanceRouter` | `/attendance/disputes` | `/v1/attendance/disputes` | Required | None | `attendanceService.submitAttendanceDispute` | 201 |
 | GET | `/v1` | `attendanceRouter` | `/attendance/disputes` | `/v1/attendance/disputes` | Required | None | `attendanceService.getAttendanceDisputes` | 200 |
 | PATCH | `/v1` | `attendanceRouter` | `/attendance/disputes/:id` | `/v1/attendance/disputes/:id` | Required | None | `attendanceService.resolveAttendanceDispute` | 200 |
@@ -97,9 +99,11 @@ All operations are handled by the **Express backend**. Clients never call the da
 | POST | `/v1/teams` | `teamsRouter` | `/:id/join` | `/v1/teams/:id/join` | Required | None | `teamsService.joinTeam` | 201 |
 | DELETE | `/v1/teams` | `teamsRouter` | `/:id/leave` | `/v1/teams/:id/leave` | Required | None | `teamsService.leaveTeam` | 204 |
 | POST | `/v1/teams` | `teamsRouter` | `/:id/invitations` | `/v1/teams/:id/invitations` | Required | None (must be LEADER) | `teamsService.inviteMember` | 201 |
+| GET | `/v1/teams` | `teamsRouter` | `/:id` | `/v1/teams/:id` | Required | None | `teamsService.getTeam` | 200 |
 | POST | `/v1/teams` | `teamsRouter` | `/:id/invitations/:invitationId/accept` | `/v1/teams/:id/invitations/:invitationId/accept` | Required | None | `teamsService.acceptInvitation` | 200 |
 | POST | `/v1/teams` | `teamsRouter` | `/:id/invitations/:invitationId/decline` | `/v1/teams/:id/invitations/:invitationId/decline` | Required | None | `teamsService.declineInvitation` | 200 |
 | DELETE | `/v1/teams` | `teamsRouter` | `/:id/invitations/:invitationId` | `/v1/teams/:id/invitations/:invitationId` | Required | None (must be LEADER) | `teamsService.cancelInvitation` | 204 |
+| POST | `/v1/teams` | `teamsRouter` | `/:id/cancel` | `/v1/teams/:id/cancel` | Required | None (must be LEADER) | `teamsService.cancelTeam` | 200 |
 | POST | `/v1/teams` | `teamsRouter` | `/:id/transfer-leadership` | `/v1/teams/:id/transfer-leadership` | Required | None (must be LEADER) | `teamsService.transferLeadership` | 200 |
 | DELETE | `/v1/teams` | `teamsRouter` | `/:id/members/:userId` | `/v1/teams/:id/members/:userId` | Required | None (must be LEADER) | `teamsService.removeMember` | 204 |
 | POST | `/v1/admin/teams` | `adminTeamsRouter` | `/:id/promote-waitlist` | `/v1/admin/teams/:id/promote-waitlist` | Required | `PLATFORM_ADMIN`, `FACULTY_ADMIN` | `adminTeamsService.manualWaitlistPromotion` | 200 |
@@ -115,6 +119,7 @@ All operations are handled by the **Express backend**. Clients never call the da
 | GET | `/v1/admin` | `adminAuditLogsRouter` | `/` | `/v1/admin/audit-logs` | Required | `PLATFORM_ADMIN` | `auditLogsService.listLogs` | 200 |
 | GET | `/v1/admin/users` | `adminUsersRouter` | `/` | `/v1/admin/users` | Required | `PLATFORM_ADMIN` | `adminUsersService.listUsers` | 200 |
 | POST | `/v1/admin/users` | `adminUsersRouter` | `/:userId/role` | `/v1/admin/users/:userId/role` | Required | `PLATFORM_ADMIN` | `adminUsersService.updateUserRole` | 200 |
+| PATCH | `/v1/admin/users` | `adminUsersRouter` | `/:userId/academic-batch` | `/v1/admin/users/:userId/academic-batch` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN` (Target: ordinary STUDENT only) | `adminUsersService.updateAcademicBatch` | 200 |
 | GET | `/v1` | `attendanceRouter` | `/events/:id/attendance/export` | `/v1/events/:id/attendance/export` | Required | `CLUB_ADMIN, CORE_MEMBER, FACULTY_MENTOR` | `attendanceService.exportEventAttendance` | `text/csv` |
 | GET | `/v1/dashboard` | `dashboardRouter` | `/summary` | `/v1/dashboard/summary` | Required | None | `dashboardService.getSummary` | 200 |
 | GET | `/v1` | `registrationsRouter` | `/events/:id/teams` | `/v1/events/:id/teams` | Required | None | `teamsService.listTeams` | 200 |

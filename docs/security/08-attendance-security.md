@@ -7,7 +7,7 @@
 4. **GPS Spoof Detection**: Basic native mock-location flag checking on the mobile device.
 
 ## Abuse Prevention
-* **Proxy Attendance Prevention**: The combination of rotating TOTP + Geofencing makes sharing screenshots impossible.
+* **Proxy Attendance Prevention**: The combination of rotating TOTP + Geofencing makes sharing screenshots impossible for students outside the venue. An Admin QR is reusable by multiple eligible students during its validity window. Attendance uniqueness is enforced per `(session_id, user_id)`. QR rotation exists to reduce stale/screenshot reuse, not to limit the QR to one student.
 * **Attendance Abuse Prevention**: Rate limits (5 attempts/min) prevent brute-forcing TOTPs.
 
 ## Known Risks

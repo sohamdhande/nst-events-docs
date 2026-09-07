@@ -113,6 +113,28 @@
   4. Update `leader_id`.
   5. `COMMIT`
 
+### `is_users_available_for_team(p_event_id, p_team_id, p_target_user_ids)`
+* **Purpose**: Batch evaluation of team eligibility for an array of candidate users. Identifies if candidates are available to be invited to a team.
+* **Outputs**: Array of `{ user_id, is_available }` rows.
+* **Security**: Enforces that the caller is the leader of the active `p_team_id` or an existing member via `current_user_id()`.
+* **Behavior**: Evaluates event state (published, locked, expired), team state, caller authorization, and confirms candidates are not already active in another team or holding pending invitations. Does NOT serve as the final capacity gate.
+
+## High-Risk Attendance RPCs (Versioned)
+
+> **RPC Versioning Rule (ADR-005/RPC-01)**: High-risk attendance functions (`mark_attendance`, `sync_offline_attendance`) must not be replaced in place to avoid breaking concurrent deployments and to ensure safe rollbacks. New versions are suffixed as `_vN` and the API layer is updated to call the specific version. Old functions remain in the database for rollback targets.
+
+### `mark_attendance_v5(p_session_id, p_user_id, ...)` (Active Version)
+* **Purpose**: Writes an attendance record after verifying TOTP HMAC, geofence bounds, device collision, and event locks.
+* **Outputs**: Standard `attendance_records` row.
+* **Security**: `SECURITY DEFINER` bound.
+* **Previous Versions**: `mark_attendance` (unversioned legacy alias)
+
+### `sync_offline_attendance_v9(p_session_id, p_batch_data)` (Active Version)
+* **Purpose**: Batch processing of offline attendance scans synchronized by the organizer.
+* **Outputs**: Array of inserted `attendance_records`.
+* **Security**: `SECURITY DEFINER` bound. Enforces the caller is an active event organizer.
+* **Previous Versions**: `sync_offline_attendance` (unversioned legacy alias)
+
 ### `submit_competition_result`
 * **Purpose**: Records a verified placement (e.g., WINNER) in the `event_results` table.
 * **Security**: Only callable by Club Admin, Faculty Mentor, Faculty Admin, Platform Admin. Students may NEVER submit results.
@@ -122,11 +144,11 @@
 * **Security**: Only callable by Platform Admin. Automatically creates an `ADJUST_POINTS` audit log.
 
 ## `manual_mark_attendance`
-* **Caller**: Platform Admin (via `POST /events/:id/attendance/manual`)
+* **Caller**: Platform Admin, Faculty Admin, Club Admin (primary club) (via `POST /events/:id/attendance/manual`)
 * **Input**: `p_session_id`, `p_user_id`
 * **Return Type**: `attendance_records` row
 * **Responsibilities**: Manually verifies attendance for a user. Bypasses QR, TOTP, and geofence validation. Enforces registration, event published state, session validity, and leaderboard rules.
-* **Security**: `SECURITY DEFINER`. Must verify caller's `global_role = 'PLATFORM_ADMIN'`.
+* **Security**: `SECURITY DEFINER`. Must verify caller is `PLATFORM_ADMIN`, `FACULTY_ADMIN`, or primary `CLUB_ADMIN` for the event.
 * **Idempotency**: `ON CONFLICT (session_id, user_id) DO NOTHING`. If record exists, returns existing record without throwing error.
 * **Leaderboard Behavior**: If a new record is inserted, automatically awards `+5` attendance points via `leaderboard_scores` table.
 * **Audit Logging**: Inserts an audit log with action `ATTENDANCE_MANUAL_MARK` and populates `audit_metadata` with `{ "method": "MANUAL" }`. Sets `attendance_records.method` to `MANUAL`.

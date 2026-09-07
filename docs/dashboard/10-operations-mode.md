@@ -13,7 +13,7 @@ A specialized, distraction-free interface for **Live Event Execution**.
 
 ## Attendance Monitoring & Manual Verification
 Provides a live feed of students checking in. 
-Allows Core Members to manually verify attendance for students with broken phones (bypassing QR, tracked securely in audit logs).
+Allows authorized Club Admins (for events of their primary club) and Platform/Faculty Admins to manually verify attendance for students (bypassing QR, tracked securely in audit logs).
 
 ## Emergency Procedures
 Includes a "Lockdown Event" button to instantly halt all check-ins and registrations.
