@@ -117,7 +117,7 @@ All operations are handled by the **Express backend**. Clients never call the da
 | GET | `/users` | `usersRouter` | `/:id/profile` | `/users/:id/profile` | Required | None | `usersService.getPublicProfile` | 200 |
 | POST | `/users` | `usersRouter` | `/me/push-token` | `/users/me/push-token` | Required | None | `usersService.registerPushToken` | 200 |
 | GET | `/v1/admin` | `adminAuditLogsRouter` | `/` | `/v1/admin/audit-logs` | Required | `PLATFORM_ADMIN` | `auditLogsService.listLogs` | 200 |
-| GET | `/v1/admin/users` | `adminUsersRouter` | `/` | `/v1/admin/users` | Required | `PLATFORM_ADMIN` | `adminUsersService.listUsers` | 200 |
+| GET | `/v1/admin/users` | `adminUsersRouter` | `/` | `/v1/admin/users` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN` | `adminUsersService.listUsers` | 200 |
 | POST | `/v1/admin/users` | `adminUsersRouter` | `/:userId/role` | `/v1/admin/users/:userId/role` | Required | `PLATFORM_ADMIN` | `adminUsersService.updateUserRole` | 200 |
 | PATCH | `/v1/admin/users` | `adminUsersRouter` | `/:userId/academic-batch` | `/v1/admin/users/:userId/academic-batch` | Required | `PLATFORM_ADMIN, FACULTY_ADMIN` (Target: ordinary STUDENT only) | `adminUsersService.updateAcademicBatch` | 200 |
 | GET | `/v1` | `attendanceRouter` | `/events/:id/attendance/export` | `/v1/events/:id/attendance/export` | Required | `CLUB_ADMIN, CORE_MEMBER, FACULTY_MENTOR` | `attendanceService.exportEventAttendance` | `text/csv` |

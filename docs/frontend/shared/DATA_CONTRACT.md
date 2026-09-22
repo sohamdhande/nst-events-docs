@@ -184,15 +184,39 @@ Source: `apps/api/src/modules/clubs/clubs.service.ts:107-123`
 
 Source: `apps/api/src/modules/users/users.service.ts:30-41`
 
-### `GET /v1/admin/users` — camelCase, Prisma-raw
+### `GET /v1/admin/users` — camelCase, context-dependent expansion
+
+**Query**: `q` (optional string), `cursor` (optional user ID), `limit` (1–100;
+default 20), and `scope` (optional; `administrators`).
+
+**Authorization**: `PLATFORM_ADMIN` or `FACULTY_ADMIN`.
+
+**Envelope**: `{ data, pagination }`; `pagination.next_cursor` is a string when
+another page exists and omitted when it does not.
+
+Every item in `data` contains:
+
 | Field | Type |
 |---|---|
 | `id`, `email` | string |
 | `fullName` | string \| null |
-| `globalRole` | enum |
-| `pagination.next_cursor` | string \| null |
+| `globalRole` | `STUDENT` \| `FACULTY_MENTOR` \| `FACULTY_ADMIN` \| `PLATFORM_ADMIN` |
+| `academicProfile` | `{ batchId, assignmentSource, assignedAt, batch }` \| null |
+| `academicProfile.assignmentSource` | `INSTITUTIONAL_EMAIL_INFERENCE` \| `ADMIN_OVERRIDE` |
+| `academicProfile.batch` | `{ id, programId, admissionYear, graduationYear, program }` \| null |
+| `academicProfile.batch.program` | `{ id, name, code }` |
 
-Source: `apps/api/src/modules/admin/users.service.ts:39-44`
+With `scope=administrators`, the server returns only users who have a global
+administrative role (`PLATFORM_ADMIN`, `FACULTY_ADMIN`, or `FACULTY_MENTOR`) or
+an active `CLUB_ADMIN` membership. In that scope only, every item also includes
+`clubMemberships: Array<{ id, role: 'CLUB_ADMIN', club: { id, name } }>` and
+the top-level envelope includes `platform_admin_count`.
+
+`CLUB_ADMIN` is a club-membership role, not a value of `globalRole`; do not
+combine them in a shared role type.
+
+Source: `apps/api/src/modules/admin/users.router.ts:12-24`,
+`apps/api/src/modules/admin/users.service.ts:7-105`
 
 > **Critical for implementers**: `/users/me` and `/admin/users` are NOT
 > interchangeable types. `full_name` (self) vs `fullName` (admin) — do not merge into
