@@ -22,6 +22,12 @@ The documentation is organized by domain ownership rather than technical impleme
 * **Audience**: Engineers, Product Managers.
 * **Relationship**: Provides the visual mapping of the contracts defined in API and Database.
 
+### [Cluster & Infrastructure](./docs/cluster/README.md)
+* **Purpose**: Full bare-metal college cluster architecture, 7-node topology, Cloudflare tunnels, Traefik ingress, Longhorn 3-way replicated storage, self-hosted CI/CD, and disaster recovery runbooks.
+* **Ownership**: DevOps / SRE / Platform Engineering.
+* **Audience**: All Engineers, SREs, Auditors, Operators, and New Team Members.
+* **Relationship**: Complete zero-code-reading operational guide for how the entire platform runs on physical hardware.
+
 ### [Security](./docs/security/README.md)
 * **Purpose**: Threat models, JWT strategies, and cryptographic signing guidelines.
 * **Ownership**: Security Team / Platform Admins.

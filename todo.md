@@ -1,10 +1,25 @@
 # NST Events — TODO
 
-Last updated: 2026-09-07
+Last updated: 2026-09-07 (post repo-health-audit)
 
 ---
 
-## 1. Finish core build (blocking everything else)
+## 0. From repo health audit (2026-09-07) — resolved and re-opened items
+
+**Resolved and verified:**
+- [x] Schema drift (AssignmentSource enum, teams unique index) — corrective migration applied and verified with clean `prisma migrate diff` (no difference detected)
+- [x] Migration ownership model (`42501` errors) — root cause confirmed (all objects owned by `postgres`, app connects as `nst_app`, `CREATE OR REPLACE FUNCTION`/RLS policy changes need owner privileges). Fixed by running migrations via `postgres` connection string, app runtime stays on `nst_app`. **Verified on a truly fresh, empty database — all 103 migrations applied with zero errors.**
+- [x] 16 scratch/debug files deleted, root `.gitignore` updated (`*.apk`, `test-*.js`, `db-check*.ts`)
+- [x] `DATABASE_URL` no longer has an insecure localhost default — fails loudly on boot if missing
+- [x] 2 real `react-hooks/purity` bugs fixed (`Date.now()` in render → moved to state+interval)
+
+**Re-opened / needs a real decision, not just a metric:**
+- [ ] **154 dashboard lint errors are suppressed via `/* eslint-disable */`, not fixed** (116 `no-explicit-any`, 26 `no-unescaped-entities`, 11 `set-state-in-effect`, 2 `ban-ts-comment`). "0 errors" on `pnpm lint` reflects suppression, not resolved type safety. Decision made: deprioritize actually fixing these until post-launch — tracked here so it isn't mistaken for solved. Consider a single dated note (not per-file) documenting this was a deliberate pre-launch tradeoff.
+- [ ] Full dependency vulnerability re-scan was not re-run after this round of changes — worth a final pass before shipping
+
+---
+
+
 
 - [ ] **iOS build & test** — handed off to teammate with a physical iPhone
   - [ ] Pull latest branch, confirm `iosClientId` + `iosUrlScheme` already wired (done — don't recreate Cloud Console client)

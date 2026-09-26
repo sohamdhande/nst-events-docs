@@ -85,6 +85,7 @@ The platform uses a two-tier role model (see `docs/backend/04-enums.md` and `doc
 9. **Component Inventory** (`docs/ui/`): 75+ React Native and Next.js components.
 10. **Product Surface**: Dispute flows, leadership handovers, multi-club events.
 11. **Diagram Suite** (`docs/diagrams/`): 22 Mermaid diagrams.
+12. **Cluster & Infrastructure Suite** (`docs/cluster/` or root `cluster/`): 8-chapter master guide detailing the 7-node bare-metal K3s college cluster, Cloudflare tunnel edge ingress, Traefik routing, Longhorn 3-way replicated block storage, self-hosted GitHub Actions CI/CD on `nst-n6`, NetworkPolicies, and disaster recovery runbooks.
 
 ---
 
