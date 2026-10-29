@@ -123,6 +123,9 @@ All operations are handled by the **Express backend**. Clients never call the da
 | GET | `/v1` | `attendanceRouter` | `/events/:id/attendance/export` | `/v1/events/:id/attendance/export` | Required | `CLUB_ADMIN, CORE_MEMBER, FACULTY_MENTOR` | `attendanceService.exportEventAttendance` | `text/csv` |
 | GET | `/v1/dashboard` | `dashboardRouter` | `/summary` | `/v1/dashboard/summary` | Required | None | `dashboardService.getSummary` | 200 |
 | GET | `/v1` | `registrationsRouter` | `/events/:id/teams` | `/v1/events/:id/teams` | Required | None | `teamsService.listTeams` | 200 |
+| GET | `/v1` | `policiesRouter` | `/policies/:slug` | `/v1/policies/:slug` | None | None | `policiesService.getPublishedPolicy` | 200 |
+| GET | `/v1/admin` | `adminPoliciesRouter` | `/policies/:slug` | `/v1/admin/policies/:slug` | Required | `PLATFORM_ADMIN` | `policiesService.getAdminPolicy` | 200 |
+| PUT | `/v1/admin` | `adminPoliciesRouter` | `/policies/:slug` | `/v1/admin/policies/:slug` | Required | `PLATFORM_ADMIN` | `policiesService.updatePolicy` | 200 / 409 |
 
 ## Deferred / Future API
 

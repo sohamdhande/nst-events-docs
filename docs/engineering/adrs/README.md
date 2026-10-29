@@ -61,6 +61,7 @@ NST-Events V1 will generally not support file uploads. All avatar, logo, certifi
 * [ADR-028: Introduce faculty roles](./adr-028-introduce-faculty-roles.md)
 * [ADR-029: Use audit logs](./adr-029-use-audit-logs.md)
 * [ADR-030: Attendance fraud mitigation is a first-class requirement](./adr-030-attendance-fraud-mitigation-is-a-first-class-requirement.md)
+* [ADR-031: Admin-Managed Privacy Policy Architecture & System Policy Persistence (Scoped Implementation Authorized; Production Launch Subject to Legal Review)](./adr-031-admin-managed-privacy-policy.md)
 * [ADR-950: Event Type Architecture](./adr-950-event-type-architecture.md)
 * [ADR-952: GPS Spoofing Strategy](./adr-952-gps-spoofing-strategy.md)
 * [ADR-953: Leaderboard Scoring Model](./adr-953-leaderboard-scoring-model.md)
@@ -81,3 +82,7 @@ NST-Events V1 will generally not support file uploads. All avatar, logo, certifi
 
 * [ADR-008: File Storage Provider — Deferred to Post-V1](./adr-008-file-storage-provider.md)
 * [ADR-024: Media Storage Architecture — Deferred to Post-V1](./adr-024-media-storage-architecture.md)
+
+## Proposed Decisions
+
+*(None currently pending review)*
