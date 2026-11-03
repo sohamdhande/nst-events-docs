@@ -47,9 +47,18 @@ sequenceDiagram
 
 ### 2.2 Mobile Authentication Flow (Expo / React Native)
 
-Mobile clients authenticate using either of two secure flows:
+Mobile authentication is standardized exclusively on native Google Sign-In (Method B). The browser deep-link flow (Method A) is deprecated.
 
-#### Method A: Deep-Link Code Exchange (Web Browser OAuth)
+#### Method A: Deep-Link Code Exchange (Web Browser OAuth) — [DEPRECATED]
+> [!WARNING]
+> **DEPRECATED & CANDIDATE FOR REMOVAL**:
+> The browser deep-link OAuth flow is deprecated. Native Google Sign-In (`POST /auth/mobile/login-id-token`) is the only supported mobile authentication flow.
+>
+> The corresponding backend endpoints and mechanisms are retained for legacy compatibility but are candidates for removal:
+> - `POST /auth/mobile/exchange` (`apps/api/src/modules/auth/auth.router.ts`)
+> - Mobile deep-link redirection branch in `GET /auth/google/callback` (`platform === 'mobile'`)
+> - In-memory single-use code storage (`apps/api/src/modules/auth/mobile-auth-codes.ts`)
+
 1. Mobile app opens system browser to `GET /auth/google?platform=mobile`.
 2. After Google callback, the API creates a cryptographically random, single-use **Mobile Auth Code** (`CODE_TTL_MS = 60_000` via `apps/api/src/modules/auth/mobile-auth-codes.ts`).
 3. API redirects browser to mobile custom scheme: `nst-events://(auth)/callback?code=<mobileCode>`.
@@ -70,8 +79,8 @@ Mobile clients authenticate using either of two secure flows:
    ```
 6. Mobile app saves `access_token`, `refresh_token`, and `user_id` into `expo-secure-store`.
 
-#### Method B: Native Google Sign-In (`id_token` Direct Exchange)
-1. Mobile app utilizes native Google Sign-In SDK to acquire a Google `id_token`.
+#### Method B: Native Google Sign-In (`id_token` Direct Exchange) — [ONLY SUPPORTED MOBILE FLOW]
+1. Mobile app utilizes native Google Sign-In SDK (`@react-native-google-signin/google-signin`) to acquire a Google `id_token`.
 2. Mobile app calls:
    ```http
    POST /auth/mobile/login-id-token
@@ -79,7 +88,16 @@ Mobile clients authenticate using either of two secure flows:
 
    { "id_token": "<google_id_token>" }
    ```
-3. API validates the ID token against Google's public keys, enforces domain restrictions, upserts user, issues tokens, and returns the token pair directly in the JSON response.
+3. API validates the ID token against Google's public keys, enforces domain restrictions, upserts user, issues tokens, and returns the token pair directly in the JSON response:
+   ```json
+   {
+     "access_token": "<jwt>",
+     "refresh_token": "<raw_refresh_token>",
+     "expires_in": 900,
+     "user": { ... }
+   }
+   ```
+4. Mobile app saves `access_token`, `refresh_token`, and `user_id` into `expo-secure-store`.
 
 ---
 
@@ -125,16 +143,17 @@ Access tokens expire after **15 minutes** (`900 seconds`). Both web and mobile i
 ---
 
 ## 5. Logout & Revocation Lifecycle
-
+ 
 When a user logs out (`POST /auth/logout`):
 1. **Server-Side Token Revocation:**
-   The backend extracts the refresh token from cookie or body, hashes it (`SHA-256`), and calls the PostgreSQL procedure:
+   The backend extracts the refresh token from cookie or JSON body (`{ "refresh_token": "<token>" }`), hashes it (`SHA-256`), and revokes the token family:
    ```sql
-   SELECT revoke_refresh_token_by_hash(${tokenHash});
+   SELECT revoke_refresh_token_family(${token.family_id}::uuid);
    ```
-   This sets `revoked_at = now()`, immediately destroying the session.
+   This immediately invalidates all refresh tokens in the family.
+   Mobile clients transmit `{ "Content-Type": "application/json", "Authorization": "Bearer <access_token>" }` with body `JSON.stringify({ refresh_token })` (without manual `Cookie` headers).
 2. **Cookie Destruction:**
    The server issues `Set-Cookie: refreshToken=; Max-Age=0; Path=/auth; HttpOnly; SameSite=Strict`.
 3. **Client-Side Cache Purge:**
-   - **Web:** Clears in-memory access token and redirects to `/login`.
-   - **Mobile:** Deletes `access_token`, `user_id`, and `refresh_token` from `expo-secure-store` and executes `queryClient.clear()` to eliminate cross-session data leaks.
+   - **Web:** Clears in-memory access token, `user_role` cookie, React Query cache, and redirects to `/login`.
+   - **Mobile:** Deletes `access_token`, `user_id`, and `refresh_token` from `expo-secure-store` and executes `queryClient.clear()` to eliminate cross-session data leaks. Local cleanup runs deterministically even if the network call times out or rejects.
