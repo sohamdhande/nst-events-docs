@@ -7,27 +7,27 @@ Last updated: 2026-09-07 (post repo-health-audit)
 ## 0. From repo health audit (2026-09-07) — resolved and re-opened items
 
 **Resolved and verified:**
-- [x] Schema drift (AssignmentSource enum, teams unique index) — corrective migration applied and verified with clean `prisma migrate diff` (no difference detected)
-- [x] Migration ownership model (`42501` errors) — root cause confirmed (all objects owned by `postgres`, app connects as `nst_app`, `CREATE OR REPLACE FUNCTION`/RLS policy changes need owner privileges). Fixed by running migrations via `postgres` connection string, app runtime stays on `nst_app`. **Verified on a truly fresh, empty database — all 103 migrations applied with zero errors.**
-- [x] 16 scratch/debug files deleted, root `.gitignore` updated (`*.apk`, `test-*.js`, `db-check*.ts`)
-- [x] `DATABASE_URL` no longer has an insecure localhost default — fails loudly on boot if missing
-- [x] 2 real `react-hooks/purity` bugs fixed (`Date.now()` in render → moved to state+interval)
+
+- [X] Schema drift (AssignmentSource enum, teams unique index) — corrective migration applied and verified with clean `prisma migrate diff` (no difference detected)
+- [X] Migration ownership model (`42501` errors) — root cause confirmed (all objects owned by `postgres`, app connects as `nst_app`, `CREATE OR REPLACE FUNCTION`/RLS policy changes need owner privileges). Fixed by running migrations via `postgres` connection string, app runtime stays on `nst_app`. **Verified on a truly fresh, empty database — all 103 migrations applied with zero errors.**
+- [X] 16 scratch/debug files deleted, root `.gitignore` updated (`*.apk`, `test-*.js`, `db-check*.ts`)
+- [X] `DATABASE_URL` no longer has an insecure localhost default — fails loudly on boot if missing
+- [X] 2 real `react-hooks/purity` bugs fixed (`Date.now()` in render → moved to state+interval)
 
 **Re-opened / needs a real decision, not just a metric:**
+
 - [ ] **154 dashboard lint errors are suppressed via `/* eslint-disable */`, not fixed** (116 `no-explicit-any`, 26 `no-unescaped-entities`, 11 `set-state-in-effect`, 2 `ban-ts-comment`). "0 errors" on `pnpm lint` reflects suppression, not resolved type safety. Decision made: deprioritize actually fixing these until post-launch — tracked here so it isn't mistaken for solved. Consider a single dated note (not per-file) documenting this was a deliberate pre-launch tradeoff.
 - [ ] Full dependency vulnerability re-scan was not re-run after this round of changes — worth a final pass before shipping
 
 ---
 
-
-
 - [ ] **iOS build & test** — handed off to teammate with a physical iPhone
+
   - [ ] Pull latest branch, confirm `iosClientId` + `iosUrlScheme` already wired (done — don't recreate Cloud Console client)
   - [ ] `npx expo run:ios --device`, resolve code signing in Xcode (Signing & Capabilities → personal Apple ID team)
   - [ ] Test sign-in with real `@adypu.edu.in` / `@newtonschool.co` account
   - [ ] Test QR scan + geofence (needs a real test session with venue coordinates set near wherever they're testing — coordinate with Soham)
   - [ ] Report any errors as raw logs, not summaries
-
 - [ ] **Sign-out flow** — confirm `GoogleSignin.signOut()` is actually wired to a visible button in the app (mentioned, never confirmed working). Needed regardless of account-deletion stance.
 
 ---
@@ -35,7 +35,7 @@ Last updated: 2026-09-07 (post repo-health-audit)
 ## 2. Working tree cleanup (real, unresolved from this session)
 
 - [ ] Review and commit or discard `apps/dashboard` changes (40+ modified/untracked files — student view, club admin UI, hooks) — never independently reviewed/tested this session
-- [ ] Review and commit or discard remaining `apps/api` changes (teams, attendance, events, leaderboard routers/services beyond the auth work)
+- [ ] Review and commit or discard remaining `apps/api` changes (teams, attendance, events routers/services beyond the auth work; leaderboard modules decommissioned)
 - [ ] Delete scratch/debug files that should never be committed: `scratch.tsx`, `test-api.js`, `packages/database/db-check.ts`, `db-check2.ts`, `db-check3.ts`, `auth_me.js`, `create_event.js/.ts`, `list_users.ts`, `make_admin.ts`, `remove_banner.ts`, `seed_event.ts`
 - [ ] Confirm `*.apk` is properly gitignored (added mid-session, verify it stuck)
 - [ ] Decide fate of `apps/mobile/eas.json` and other untracked mobile files (disputes, history, settings screens, UI components) — appear to be real feature work, needs review

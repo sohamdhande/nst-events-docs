@@ -14,5 +14,5 @@
 | MOB-10 | Notifications | /(app)/notifications | Any | SPECIFICATION COMPLETE | [Spec](./notifications.md) | Matrix | READY |
 | MOB-11 | Profile | /(tabs)/profile | Any | SPECIFICATION COMPLETE | [Spec](./profile.md) | Matrix | READY |
 | MOB-12 | Clubs | /(tabs)/clubs | Any | SPECIFICATION COMPLETE | [Spec](./clubs.md) | Matrix | READY |
-| MOB-13 | Leaderboard | /(app)/leaderboard | Any | SPECIFICATION COMPLETE | [Spec](./leaderboard.md) | Matrix | READY |
+| MOB-13 | Leaderboard | /(app)/leaderboard | Any | DECOMMISSIONED / REMOVED | [Spec](./leaderboard.md) | Matrix | REMOVED |
 | MOB-14 | Dispute flows | /(app)/disputes | Any | SPECIFICATION COMPLETE | [Spec](./dispute-flows.md) | Matrix | READY |

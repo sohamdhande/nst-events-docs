@@ -1,6 +1,6 @@
-# Leaderboard Governance
+# Leaderboard Governance (DECOMMISSIONED)
 
-## Abuse Prevention
+> **Status: Removed**. Leaderboard governance, point deductions, and leaderboard recalculations have been decommissioned and removed from NST Events.
 Points must never be directly editable. Values are calculated dynamically from verified database records (`event_registrations` and `event_results`).
 Students are cryptographically and operationally blocked from assigning roles or submitting competition results.
 

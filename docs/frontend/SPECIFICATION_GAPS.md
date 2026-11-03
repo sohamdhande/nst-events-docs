@@ -33,7 +33,7 @@
 - STATUS: RESOLVED. Populated in DATA_CONTRACT.md via Prisma Schema inspection.
 
 ## DATA-FIELDS-LEADERBOARD-001
-- STATUS: RESOLVED. Populated in DATA_CONTRACT.md via actual API validation.
+- STATUS: DECOMMISSIONED / REMOVED. Student and club leaderboards have been decommissioned and removed.
 
 ## SSE-PAYLOAD-001
 - STATUS: RESOLVED. Investigated Postgres migrations and Express routers to fully extract deterministic event types (`registration_count`, `waitlist_update`, `heartbeat`). Fully documented in DATA_CONTRACT.md.

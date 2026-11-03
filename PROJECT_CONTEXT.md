@@ -81,7 +81,7 @@ The platform uses a two-tier role model (see `docs/backend/04-enums.md` and `doc
 5. **Events & Attendance Models**: Generic JSONB `events`, 4-step approval workflows, Dynamic QR TOTP, HMAC validation.
 6. **Dashboard Navigation** (`docs/dashboard/`): Single shell, Command Palette, Operations mode, strict routing.
 7. **Design System** (`docs/design-system/`): Token-driven, Geist typography, NativeWind, accessibility.
-8. **Leaderboard** (`docs/features/leaderboard/`): Materialized views aggregating `leaderboard_scores`, abuse prevention, audited role assignments.
+8. **Leaderboard** (DECOMMISSIONED): Completely removed across schema, API, and frontend applications. Competition results (winners/runner-up) preserved under event results.
 9. **Component Inventory** (`docs/ui/`): 75+ React Native and Next.js components.
 10. **Product Surface**: Dispute flows, leadership handovers, multi-club events.
 11. **Diagram Suite** (`docs/diagrams/`): 22 Mermaid diagrams.

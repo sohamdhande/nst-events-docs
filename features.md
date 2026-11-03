@@ -14,11 +14,11 @@ This index provides direct navigation to all core product and feature documentat
 * **[Dynamic QR Attendance System](./docs/product/attendance/attendance-system.md)** — Documentation on the dynamic QR generation, TOTP logic, geofencing, and check-in workflows.
 * **[Attendance Dispute System](./docs/product/attendance/attendance-dispute-system.md)** — The resolution pipeline for students missing attendance due to technical/GPS issues.
 
-## 🏆 Leaderboard & Scoring
-* **[Leaderboard System](./docs/product/leaderboard/leaderboard-system.md)** — Overview of the gamification features for students and clubs.
-* **[Leaderboard Scoring Logic](./docs/product/leaderboard/leaderboard-scoring.md)** — The mathematical point distribution system for attendance, contribution, and competitions.
-* **[Competition Results Management](./docs/product/leaderboard/competition-results-management.md)** — How competitive events are scored, approved, and integrated into the leaderboard.
-* **[Leaderboard Governance](./docs/product/leaderboard/leaderboard-governance.md)** — Anti-cheating policies, point deductions, and manual adjustments by admins.
+## 🏆 Leaderboard & Scoring (DECOMMISSIONED)
+> **Decision**: Student and club leaderboards have been completely removed from NST Events. Gamification leaderboards, rank positions, and ranking calculations are not implemented.
+
+* **[Competition Results Management](./docs/product/leaderboard/competition-results-management.md)** — How competitive events and award placements (winner, runner-up) are recorded, approved, and preserved.
+* **[Leaderboard System (Archived)](./docs/product/leaderboard/leaderboard-system.md)** — Historical overview of the decommissioned leaderboard proposal.
 
 ---
 *For UI screen implementation details, please see the [Web Screens Index](./docs/frontend/web/SCREEN_INDEX.md) and [Mobile Screens Index](./docs/frontend/mobile/SCREEN_INDEX.md).*

@@ -240,26 +240,9 @@ Source: `apps/api/src/modules/notifications/notifications.service.ts:44`
 
 ---
 
-## Leaderboard
+## Leaderboard (DECOMMISSIONED)
 
-### `GET /v1/leaderboard/students` — snake_case, raw SQL projection
-| Field | Type |
-|---|---|
-| `user_id`, `display_name` | string |
-| `total_points` | number |
-| `attendance_points`, `contribution_points`, `competition_points` | number — **STUBBED, hardcoded to 0 in the materialized view; do not treat as real yet** |
-| `last_refreshed_at` | string (ISO) |
-
-Source: `apps/api/src/modules/leaderboard/leaderboard.service.ts:17-24` (`$queryRaw`)
-
-### `GET /v1/leaderboard/clubs` — snake_case, raw SQL projection
-| Field | Type |
-|---|---|
-| `club_id`, `club_name` | string |
-| `total_points`, `event_count`, `member_count` | number |
-| `last_refreshed_at` | string (ISO) |
-
-Source: `apps/api/src/modules/leaderboard/leaderboard.service.ts:52-58` (`$queryRaw`)
+> **Status: Removed**. We have decided not to build student and club leaderboards. The endpoints `GET /v1/leaderboard/students` and `GET /v1/leaderboard/clubs` have been removed from the API contract and backend router.
 
 ---
 

@@ -77,7 +77,7 @@ The following tables map specific UI actions to the roles required to perform th
 
 | Action | Guard Function | Required Role(s) | Notes |
 |--------|----------------|------------------|-------|
-| **Recalculate Leaderboard**| `canRecalculateLeaderboard`| `PLATFORM_ADMIN` | Triggers materialized view refresh on DB. |
+| ~~**Recalculate Leaderboard**~~ | *None (Decommissioned)* | `PLATFORM_ADMIN` | *Decommissioned and removed along with leaderboards.* |
 | **View Audit Logs** | `isPlatformAdmin` | `PLATFORM_ADMIN` | Access `/admin/audit-logs`. |
 | **Monitor Queues / DLQ** | `isPlatformAdmin` | `PLATFORM_ADMIN` | Access `/admin/queues`. |
 | **View Academic Catalog** | `canViewAcademicCatalog` | `PLATFORM_ADMIN`, `FACULTY_ADMIN` | View programs and batches. |

@@ -1,15 +1,17 @@
-# Mobile Leaderboard Screen
+# Mobile Leaderboard Screen (DECOMMISSIONED)
+
+> **Status: Removed**. We have decided not to build student or club leaderboards. This screen and its routes have been completely removed from the application.
 
 ## 1. Identity
 - **Screen ID**: MOB-13
 - **Screen Name**: Leaderboard
 - **Platform**: Mobile
-- **Implementation Status**: PLANNED
-- **Specification Status**: SPECIFICATION COMPLETE
+- **Implementation Status**: DECOMMISSIONED / REMOVED
+- **Specification Status**: DECOMMISSIONED
 - **Canonical Source Documents**: `DATA_CONTRACT.md`, `02-api-routing-matrix.md`
 
 ## 2. Route
-- **Route**: `/(app)/leaderboard`
+- **Route**: `/(app)/leaderboard` (REMOVED)
 
 ## 3. Role / Access
 - **Visibility**: Authenticated User

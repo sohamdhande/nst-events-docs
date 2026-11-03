@@ -32,7 +32,6 @@ Displayed for users with a `FACULTY_MENTOR` club membership. Features:
 - **Tabbed Data Panel**:
   - **Pending Approvals Tab**: Table of events in `PENDING_APPROVAL` state for the selected club. Columns: Event Title, Submitted By, Action (→ Review button linking to `/events/[id]`). Badge count on tab label.
   - **Attendance Disputes Tab**: Table of PENDING disputes for the selected club. Columns: Student, Reason (ellipsed), Event, Action (→ Review button linking to `/events/[id]/attendance`). Badge count on tab label.
-  - **Club Leaderboard Tab**: Table showing ranked students by `total_points` within the club.
   - **Recent Activity Tab**: Table of audit activity items. Columns: Time, Action, Actor.
 
 ---
@@ -397,10 +396,6 @@ The most operationally complex screen, with real-time QR generation, session lif
 Non-admin users are redirected to `/dashboard`.
 
 ### Layout (Two-Column)
-
-**Quick Actions** (PLATFORM_ADMIN only):
-- **Point Adjustments**: Disabled. Labeled "DEFERRED TO V2".
-- **Leaderboard Recalculation**: "Recalculate Now" button → confirm modal → `recalculateLeaderboard.mutateAsync()`. Success/error toast.
 
 **Recent Audit Logs** (PLATFORM_ADMIN only):
 - Table of recent logs. Columns: Action, Actor ID, Target (entity type + ID), Time (relative format: "5m ago", "2h ago").

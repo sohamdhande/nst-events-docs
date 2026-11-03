@@ -79,9 +79,6 @@ All operations are handled by the **Express backend**. Clients never call the da
 | GET | `/v1/events` | `eventsRouter` | `/:id/sessions` | `/v1/events/:id/sessions` | Required | None | `eventsService.listSessions` | 200 |
 | POST | `/v1/events` | `eventsRouter` | `/:id/sessions` | `/v1/events/:id/sessions` | Required | `CLUB_ADMIN, CORE_MEMBER` | `eventsService.createSession` (Must enforce SINGLE session cardinality if AttendanceType is SINGLE) | 201 |
 | PATCH | `/v1/events` | `eventsRouter` | `/:id/sessions/:sessionId` | `/v1/events/:id/sessions/:sessionId` | Required | `CLUB_ADMIN, CORE_MEMBER` | `eventsService.updateSession` | 200 |
-| GET | `/v1/leaderboard` | `leaderboardRouter` | `/students` | `/v1/leaderboard/students` | Required | None | `leaderboardService.getStudentLeaderboard` | 200 |
-| GET | `/v1/leaderboard` | `leaderboardRouter` | `/clubs` | `/v1/leaderboard/clubs` | Required | None | `leaderboardService.getClubLeaderboard` | 200 |
-| POST | `/v1/admin/leaderboard` | `adminLeaderboardRouter` | `/recalculate` | `/v1/admin/leaderboard/recalculate` | Required | `PLATFORM_ADMIN` | `leaderboardService.refreshLeaderboards` | 200 |
 | GET | `/v1/notifications` | `notificationsRouter` | `/` | `/v1/notifications` | Required | None | `notificationsService.getNotifications` | 200 |
 | GET | `/v1/notifications` | `notificationsRouter` | `/unread-count` | `/v1/notifications/unread-count` | Required | None | `notificationsService.getUnreadCount` | 200 |
 | GET | `/v1/notifications` | `sseRouter` | `/live` | `/v1/notifications/live` | Required | None | `SSE Connection` | `text/event-stream` |
@@ -135,7 +132,7 @@ The following endpoints are **NOT IMPLEMENTED**, are **NOT PART OF CURRENT V1**,
 |--------|---------------|--------|--------|
 | GET | `/v1/home/feed` | DEFERRED | Mobile Home will compose data from existing APIs in parallel. The frontend MUST NOT call this. |
 | GET | `/v1/events/:id/waitlist` | DEFERRED | Organizer/admin waitlist views use `GET /v1/events/:id/registrations?filter_status=WAITLISTED`. No participant waitlist UI in V1. |
-| POST | `/v1/admin/points/adjust` | DEFERRED | Leaderboard scores are derived/immutable. Deferred until complete domain model exists. |
+| POST | `/v1/admin/points/adjust` | DECOMMISSIONED | Removed along with leaderboards. Student and club leaderboards are no longer implemented. |
 | GET | `/v1/analytics/*` | DEFERRED | Deferred until concrete analytics screen, metrics, and auth model are formally specified. |
 | GET/POST | `/v1/announcements` | DEFERRED | Global messages use existing notifications infrastructure. No bulletin-board product surface in V1. |
 | POST | `/upload/presign` (Example) | DEFERRED | File uploads are deferred (ADR-008). V1 Club Branding uses an externally hosted image URL, so this endpoint is not required for V1. |

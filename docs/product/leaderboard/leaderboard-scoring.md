@@ -1,6 +1,6 @@
-# Leaderboard Scoring Rules
+# Leaderboard Scoring Rules (DECOMMISSIONED)
 
-## The Point Model
+> **Status: Removed**. Leaderboards and leaderboard scoring have been decommissioned and removed from NST Events.
 
 ### Roles
 * `ATTENDEE`: +10

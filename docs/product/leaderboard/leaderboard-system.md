@@ -1,8 +1,7 @@
 # Merit-Based Leaderboard System
 
-## Status: Frozen
-## Version: 1.0
-## Architecture State: Accepted
+## Status: DECOMMISSIONED / NOT IMPLEMENTED
+## Architecture State: Removed (We have decided not to build student and club leaderboards)
 
 ## Core Philosophy
 The NST-Events platform adopts a Merit-Based Participation Model. We explicitly reject leaderboards driven merely by event registrations or waitlist placements.
